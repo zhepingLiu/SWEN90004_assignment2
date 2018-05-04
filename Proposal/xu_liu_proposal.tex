@@ -1,0 +1,67 @@
+\documentclass[UTF8,11pt]{article}
+\usepackage{indentfirst}
+\usepackage{amsmath}
+
+\title{SWEN90004 Modelling Complex Software System\\
+      \textbf{Assignment 2 Proposal}}
+\author{Zheping Liu, zhepingl, 683781\\
+        Zewen Xu, zewenx, 862393}
+\date{}
+
+%1. a description of the model you are replicating:
+%    - what is it a model of?
+%    - what is it a model for? (ie, what can a user learn from it?)
+
+%2. the *conceptual* design of the existing model:
+%    - what are the parts of the system?
+%    - what states can they take?
+%    - how do the parts interact?
+%    - how are states updated?
+%    - what are the parameters of the system?
+
+%3. a plan for how you intend to implement this in Java?
+%    - what objects, classes, data structures will you use?
+
+%4. (perhaps, if you have already spent some time playing with the NetLogo model) the experiments you intend to run:
+%    - what are the key behaviours/dynamics of the system?
+%    - how do these behaviours/dynamics change with parameter values?
+
+\begin{document}
+    \maketitle
+    \section{Descriptive Overview}
+        Our group decides to replicate the \textbf{Rebellion} model.
+        This model is based on model of civil violence by Joshua Epstein (2002).
+        It describes the how agents behave against central authority in relation
+        to their grievance and power of authority. Where grievance of agents
+        depends on government legitimacy, perceived hardship and risk aversion 
+        of each individual. Power of authority is determined by number of police
+        officers, their vision and maximum jail terms. There are two global 
+        variables in the model that cannot be directly set in the interface that 
+        are \textbf{k}, the factor for determining arrest probability, and 
+        \textbf{threshold} for agents to rebel.
+
+    \section{Design of Rebellion Model}
+        There are two kinds of members in this model, \textbf{agents} and 
+        \textbf{police officers}. Police officers only has one state that is
+        arresting active agents (rebelled agents) in their vision. If there are
+        more than one active agents in the vision, they will arrest randomly one
+        of them. There are three different states for agents, quiet, active and
+        jailed. The state update rule are as following:
+        \subsection{\[Quiet \Rightarrow Active\]}
+        \begin{equation}
+            \begin{split}
+                grievance\:-\:riskAversion\:\times\:estimatedArrestProbability\:>\:threshold \\
+                \text{Where}\ grievance\:=\:perceivedHardship\:\times\:(1\:-\:governmentLegitimacy)
+            \end{split}
+        \end{equation}
+        \subsection{\[Active \Rightarrow Quiet\]}
+        \subsection{\[Active \Rightarrow Jailed\]}
+            If police officers find active agents in their vision, they will
+            randomly arrest one of these active agents and change their state from
+            \textbf{active} to \textbf{jailed}.
+        \subsection{\[Jailed \Rightarrow Quiet\]}
+        \subsection{\[Active \Rightarrow Quiet\]}
+
+
+    
+\end{document}
