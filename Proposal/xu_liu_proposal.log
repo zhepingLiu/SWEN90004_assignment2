@@ -1,13 +1,13 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.21)  6 MAY 2018 11:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.21)  7 MAY 2018 11:13
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"/Users/zheping/Documents/University Work/Master Year 2/Modelling Complex Sof
-tware System/Assignment 2/Assignment 2 proposal/xu_liu_proposal.tex"
+**"/Users/zheping/Documents/MyPrograming/Modelling Complex Systems Engineering/
+Project_2_zhepingl_zewenx/Proposal/xu_liu_proposal.tex"
 
-(/Users/zheping/Documents/University Work/Master Year 2/Modelling Complex Softw
-are System/Assignment 2/Assignment 2 proposal/xu_liu_proposal.tex
+(/Users/zheping/Documents/MyPrograming/Modelling Complex Systems Engineering/Pr
+oject_2_zhepingl_zewenx/Proposal/xu_liu_proposal.tex
 LaTeX2e <2017-04-15>
 Babel <3.14> and hyphenation patterns for 84 language(s) loaded.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/base/article.cls
@@ -117,12 +117,12 @@ Overfull \hbox (0.35123pt too wide) detected at line 69
 [2] (./xu_liu_proposal.aux) ) 
 Here is how much of TeX's memory you used:
  861 strings out of 492990
- 10308 string characters out of 6132635
+ 10269 string characters out of 6132635
  66414 words of memory out of 5000000
  4469 multiletter control sequences out of 15000+600000
  10362 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 27i,17n,20p,337b,199s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 27i,17n,20p,324b,199s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/pu
 blic/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/pub
 lic/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/publ
@@ -133,7 +133,7 @@ msfonts/cm/cmr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/ams
 fonts/cm/cmr17.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfo
 nts/cm/cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfon
 ts/cm/cmti10.pfb>
-Output written on xu_liu_proposal.pdf (2 pages, 114083 bytes).
+Output written on xu_liu_proposal.pdf (2 pages, 114218 bytes).
 PDF statistics:
  47 PDF objects out of 1000 (max. 8388607)
  33 compressed objects within 1 object stream
