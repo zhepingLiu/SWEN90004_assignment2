@@ -1,6 +1,6 @@
 # Fdb version 3
-["pdflatex"] 1525414374 "/Users/zheping/Documents/University Work/Master Year 2/Modelling Complex Software System/Assignment 2/Assignment 2 proposal/xu_liu_proposal.tex" "xu_liu_proposal.pdf" "xu_liu_proposal" 1525414374
-  "/Users/zheping/Documents/University Work/Master Year 2/Modelling Complex Software System/Assignment 2/Assignment 2 proposal/xu_liu_proposal.tex" 1525414373 3093 7a6315a563b5b6bb9ac5167930f07e0d ""
+["pdflatex"] 1525571318 "/Users/zheping/Documents/University Work/Master Year 2/Modelling Complex Software System/Assignment 2/Assignment 2 proposal/xu_liu_proposal.tex" "xu_liu_proposal.pdf" "xu_liu_proposal" 1525571318
+  "/Users/zheping/Documents/University Work/Master Year 2/Modelling Complex Software System/Assignment 2/Assignment 2 proposal/xu_liu_proposal.tex" 1525571317 4030 0ec732fcf12f92d3de2a83bfc469c588 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/map/fontname/texfonts.map" 1480098670 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1480098698 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1480098698 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -19,6 +19,7 @@
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm" 1480098701 1124 6c73e740cf17375f03eec0ee63599741 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/cm/cmsy6.tfm" 1480098701 1116 933a60c408fc0a863a92debe84b2d294 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/cm/cmsy8.tfm" 1480098701 1120 8b7d695260f3cff42e636090a8002094 ""
+  "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/cm/cmti10.tfm" 1480098701 1480 aa8e34af0eb6a2941b776984cf1dfdc4 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb" 1480098733 34811 78b52f49e893bcba91bd7581cdc144c0 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1480098733 32080 340ef9bf63678554ee606688e7b5339d ""
   "/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1480098733 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
@@ -27,6 +28,7 @@
   "/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1480098733 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1480098733 32362 179c33bbf43f19adbb3825bb4e36e57a ""
   "/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1480098733 32569 5e5ddc8df908dea60932f3c484a54c0d ""
+  "/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1480098733 37944 359e864bd06cde3b1cf57bb20757fb06 ""
   "/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsbsy.sty" 1480098820 2210 5c54ab129b848a5071554186d0168766 ""
   "/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsgen.sty" 1480098820 4160 c115536cf8d4ff25aa8c1c9bc4ecb79a ""
   "/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsmath.sty" 1504905757 84352 897a476d96a0681047a5b0f91178a3d2 ""
@@ -39,9 +41,9 @@
   "/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1508577553 2413399 a34414952447e5770f00490a7226a53e ""
   "/usr/local/texlive/2017/texmf-var/web2c/pdftex/pdflatex.fmt" 1508577576 4130345 4c8343cd34ffb63c61ef05abd770a6e3 ""
   "/usr/local/texlive/2017/texmf.cnf" 1495593465 577 2b71d4d888f9e5560b2e99985915a9fa ""
-  "xu_liu_proposal.aux" 1525414374 653 4889341c8bfce1feb4a92ee2a32275ba ""
-  "xu_liu_proposal.tex" 1525414373 3093 7a6315a563b5b6bb9ac5167930f07e0d ""
+  "xu_liu_proposal.aux" 1525571318 869 f2e7cd1c07f0f616c24bbe5d41526bc4 ""
+  "xu_liu_proposal.tex" 1525571317 4030 0ec732fcf12f92d3de2a83bfc469c588 ""
   (generated)
-  "xu_liu_proposal.log"
   "xu_liu_proposal.pdf"
+  "xu_liu_proposal.log"
   "xu_liu_proposal.aux"

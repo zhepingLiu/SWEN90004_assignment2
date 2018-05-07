@@ -37,31 +37,52 @@
         of each individual. Power of authority is determined by number of police
         officers, their vision and maximum jail terms. There are two global 
         variables in the model that cannot be directly set in the interface that 
-        are \textbf{k}, the factor for determining arrest probability, and 
-        \textbf{threshold} for agents to rebel.
+        are \textit{k}, the factor for determining arrest probability, and 
+        \textit{threshold} for agents to rebel.
+
+        \paragraph{}
+        Users can observe how ordinary people feel about the authority under
+        certain imposed pressure. In addition, social scientists can study how
+        different personalities affect their behaviour to authority.
 
     \section{Design of Rebellion Model}
-        There are two kinds of members in this model, \textbf{agents} and 
-        \textbf{police officers}. Police officers only has one state that is
-        arresting active agents (rebelled agents) in their vision. If there are
-        more than one active agents in the vision, they will arrest randomly one
-        of them. There are three different states for agents, quiet, active and
-        jailed. The state update rule are as following:
-        \subsection{\[Quiet \Rightarrow Active\]}
+        There are two categories of members in this model, \textbf{agents} and 
+        \textbf{police officers}. 
+        \paragraph{}
+        The states of them are made of two parts.
+        The first part is their location. Police officers can always move to 
+        unoccupied patches freely. Where the mobility of agents can be switched
+        on and off in the model.
+        \paragraph{}
+        The second part is the behaviour of members.
+        Police officers only has one state that is arresting active agents 
+        (rebelled agents) in their vision. If there are more than one active 
+        agents in the vision, they will arrest randomly one of them. There are 
+        three different states for agents, quiet, active and jailed. 
+        The state update rule are as following:
+        \subsection{$Quiet \Rightarrow Active$}
         \begin{equation}
             \begin{split}
                 grievance\:-\:riskAversion\:\times\:estimatedArrestProbability\:>\:threshold \\
                 \text{Where}\ grievance\:=\:perceivedHardship\:\times\:(1\:-\:governmentLegitimacy)
             \end{split}
         \end{equation}
-        \subsection{\[Active \Rightarrow Quiet\]}
-        \subsection{\[Active \Rightarrow Jailed\]}
+        \subsection{$Active \Rightarrow Quiet$}
+        \begin{equation}
+            \begin{split}
+                grievance\:-\:riskAversion\:\times\:estimatedArrestProbability\:\leq\:threshold
+            \end{split}
+        \end{equation}
+        \subsection{$Active \Rightarrow Jailed$}
             If police officers find active agents in their vision, they will
-            randomly arrest one of these active agents and change their state from
-            \textbf{active} to \textbf{jailed}.
-        \subsection{\[Jailed \Rightarrow Quiet\]}
-        \subsection{\[Active \Rightarrow Quiet\]}
+            randomly arrest one of these active agents and change their state 
+            from \textbf{active} to \textbf{jailed}.
+        \subsection{$Jailed \Rightarrow Quiet$}
+            If the jailed agents stay in jail after the \textit{maximum jailed 
+            period}, they will become quiet.
 
+    \section{Plan of Implementation}
 
-    
+    \section{Key Behaviour of Rebellion}
+
 \end{document}
