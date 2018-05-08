@@ -1,5 +1,7 @@
 package model;
 
 public class Empty extends Patch{
-	int state = 0;
+	public Empty() {
+		super.setState(0);
+	}
 }
