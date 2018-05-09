@@ -1,6 +1,7 @@
 package utils;
 
 import Controller.Board;
+import model.Empty;
 import model.Patch;
 
 public class PrintUtil {
@@ -13,10 +14,13 @@ public class PrintUtil {
 		return printer;
 	}
 	
-	public void printBoard(Patch[][] patchs){
+	public void printBoard(Patch[][][] patchs){
 		for (int i = 0; i < 40; i++) {
 			for (int j = 0; j < 40; j++) {
-				System.out.print( patchs[i][j].toString()+" ");
+				if (!(patchs[0][i][j] instanceof Empty)) {
+					System.out.print(patchs[0][i][j].toString());
+				}
+				System.out.print( patchs[1][i][j].toString()+" ");
 			}
 			System.out.println();
 		}

@@ -5,9 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
+
 import com.google.gson.Gson;
 
 import configure.ConfigureVO;
+import model.Empty;
+import model.Patch;
 
 public class Controller {
 	Board board;
@@ -53,5 +57,19 @@ public class Controller {
 	}
 
 	void start() {
+		move();
+	}
+
+	void move() {
+		Patch[][][] patchs = board.getPatchs();
+		for (int i = 0; i < 40; i++) {
+			for (int j = 0; j < 40; j++) {
+				moveOnePatch(i, j, patchs);
+			}
+		}
+	}
+
+	private void moveOnePatch(int i, int j, Patch[][][] patchs) {
+
 	}
 }
