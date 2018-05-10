@@ -13,9 +13,10 @@ import utils.PrintUtil;
 import utils.RandomUtil;
 
 public class Board {
-	Patch[][][] patches;
-	int agentNum, copNum;
-	ConfigureVO configureVO;
+
+	private Patch[][][] patchs;
+	private int agentNum, copNum;
+	private ConfigureVO configureVO;
 
 	public Board(ConfigureVO vo) {
 		patches = new Patch[2][40][40];
@@ -26,7 +27,7 @@ public class Board {
 		PrintUtil.getInstance().printBoard(patches);
 	}
 
-	void init() {
+	private void init() {
 		for (int i = 0; i < 40; i++) {
 			for (int j = 0; j < 40; j++) {
 				patches[0][i][j] = new Empty(i,j,configureVO.getVision());
