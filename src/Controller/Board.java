@@ -13,44 +13,31 @@ import utils.PrintUtil;
 import utils.RandomUtil;
 
 public class Board {
-	Patch[][][] patchs;
+	Patch[][][] patches;
 	int agentNum, copNum;
+	ConfigureVO configureVO;
 
 	public Board(ConfigureVO vo) {
-		patchs = new Patch[2][40][40];
+		patches = new Patch[2][40][40];
 		agentNum = (int) (40 * 40 * vo.getInitial_agent_density());
 		copNum = (int) (40 * 40 * vo.getInitial_cop_density());
+		this.configureVO = vo;
 		init();
-		PrintUtil.getInstance().printBoard(patchs);
+		PrintUtil.getInstance().printBoard(patches);
 	}
 
 	void init() {
 		for (int i = 0; i < 40; i++) {
 			for (int j = 0; j < 40; j++) {
-				patchs[0][i][j] = new Empty();
-				patchs[1][i][j] = new Empty();
+				patches[0][i][j] = new Empty(i,j,configureVO.getVision());
+				patches[1][i][j] = new Empty(i,j,configureVO.getVision());
 			}
 		}
 
 		for (int i = 0; i < agentNum; i++) {
 			int x = RandomUtil.getRandomInt(40);
 			int y = RandomUtil.getRandomInt(40);
-			while (!(patchs[1][x][y] instanceof Empty)) {
-				if (y == 39){
-					x++;
-					y=0;
-				}else {
-					y++;
-				}
-			}
-			patchs[1][x][y] = new Agent();
-			
-		}
-		
-		for (int i = 0; i < copNum; i++) {
-			int x = RandomUtil.getRandomInt(40);
-			int y = RandomUtil.getRandomInt(40);
-			while (!(patchs[1][x][y] instanceof Empty)) {
+			while (!(patches[1][x][y] instanceof Empty)) {
 				if (y == 39 && x == 39){
 					x=0;
 					y=0;
@@ -61,13 +48,31 @@ public class Board {
 					y++;
 				}
 			}
-			patchs[1][x][y] = new Cop();
+			patches[1][x][y] = new Agent(x,y,configureVO.getVision());
+			
+		}
+		
+		for (int i = 0; i < copNum; i++) {
+			int x = RandomUtil.getRandomInt(40);
+			int y = RandomUtil.getRandomInt(40);
+			while (!(patches[1][x][y] instanceof Empty)) {
+				if (y == 39 && x == 39){
+					x=0;
+					y=0;
+				}else if( y == 39){
+					y=0;
+					x++;
+				}else {
+					y++;
+				}
+			}
+			patches[1][x][y] = new Cop();
 			
 		}
 	}
 
 	public Patch[][][] getPatchs() {
-		return patchs;
+		return patches;
 	}
 	
 	

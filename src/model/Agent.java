@@ -9,7 +9,11 @@ public class Agent extends Patch{
 	double perceived_hardship;
 	int jail_term;
 	
-	public Agent() {
+	
+	
+	public Agent(int x, int y,double vision) {
+		this.vision = vision;
+		setCoordinate(x, y);
 		init();
 	}
 	
@@ -19,4 +23,7 @@ public class Agent extends Patch{
 		perceived_hardship = RandomUtil.getRandomDouble(1);
 	}
 
+	
+
+	
 }
