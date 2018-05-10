@@ -13,8 +13,8 @@ import utils.PrintUtil;
 import utils.RandomUtil;
 
 public class Board {
-	Patch[][][] patchs;
-	int agentNum, copNum;
+	private Patch[][][] patchs;
+	private int agentNum, copNum;
 
 	public Board(ConfigureVO vo) {
 		patchs = new Patch[2][40][40];
@@ -24,7 +24,7 @@ public class Board {
 		PrintUtil.getInstance().printBoard(patchs);
 	}
 
-	void init() {
+	private void init() {
 		for (int i = 0; i < 40; i++) {
 			for (int j = 0; j < 40; j++) {
 				patchs[0][i][j] = new Empty();
