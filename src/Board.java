@@ -24,22 +24,34 @@ public class Board {
                 patches.put(coordinate, patch);
             }
         }
+
+        //Cache all neighbourhood patches for each patch
+        for (Patch p : patches.values()) {
+            p.setNeighbourhood(getNeighbourhood(p));
+        }
     }
 
     public HashMap<Coordinate, Patch> getPatches() {
         return patches;
     }
 
+    public Patch retrievePatch(int x, int y) {
+        return patches.get(keys[x][y]);
+    }
+
     /**
      * Return the neighbourhood patches of the given patch
-     * @param patch
-     * @return
+     * @param patch the given patch
+     * @return neighbourhood an ArrayList contains all neighbourhood
+     *         patches around the given patch
      */
     public ArrayList<Patch> getNeighbourhood(Patch patch) {
         ArrayList<Patch> neighbourhood = new ArrayList<>();
         Coordinate targetCoordinate = patch.getCoordinate();
+
         int x = targetCoordinate.getPositionX();
         int y = targetCoordinate.getPositionY();
+        neighbourhood.add(patches.get(keys[x][y]));
 
         for (int i=1;i<=Controller.VISION;i++) {
 //            if (x + i >= lengthX) {
@@ -79,7 +91,6 @@ public class Board {
 //            } else {
 //                neighbourhood.add(patches.get(keys[x - i][y - i]));
 //            }
-
             //TODO: Try Mod 40 to set X and Y
             int xPlusI = (x + i) % lengthX;
             int xMinusI = (x - i + lengthX) % lengthX;
@@ -95,8 +106,6 @@ public class Board {
             neighbourhood.add(patches.get(keys[xPlusI][yMinusI]));
             neighbourhood.add(patches.get(keys[xMinusI][yPlusI]));
         }
-
-
         return neighbourhood;
     }
 
