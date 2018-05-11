@@ -6,9 +6,6 @@ public class Agent {
     private final static int INITIAL_HEADING = 0;
     private final static int INITIAL_JAIL_TERM = 0;
 
-    private final static double K = 2.3;
-    private final static double THRESHOLD = 0.1;
-
     private int id;
     private Patch position;
     private int heading;
@@ -27,6 +24,7 @@ public class Agent {
     public Agent(int id, Patch position) {
         this.id = id;
         this.position = position;
+        this.position.occupy();
         this.heading = INITIAL_HEADING;
         this.riskAversion =
                 randomGenerator.nextDouble() *
@@ -64,11 +62,13 @@ public class Agent {
     }
 
     public void setMoved(boolean moved) {
-        this.moved = false;
+        this.moved = moved;
     }
 
     public void move(Patch targetPosition) {
+        this.position.empty();
         this.position = targetPosition;
+        this.position.occupy();
         this.moved = true;
     }
 
@@ -80,7 +80,7 @@ public class Agent {
     public void reportArrestProbability(int copsCount, int activeCount) {
         activeCount++;
         this.estimatedArrestProbability =
-                1 - Math.exp(-K * (copsCount / activeCount));
+                1 - Math.exp(-Controller.K * (copsCount / activeCount));
     }
 
     public void determineBehaviour(int copsCount, int activeCount) {
@@ -88,7 +88,7 @@ public class Agent {
             reportGrievance();
             reportArrestProbability(copsCount, activeCount);
             if (this.grievance - riskAversion * estimatedArrestProbability
-                    > THRESHOLD) {
+                    > Controller.THRESHOLD) {
                 this.active = true;
             } else {
                 active = false;

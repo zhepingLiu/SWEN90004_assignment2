@@ -3,6 +3,9 @@ public class Controller {
     public final static int MAP_LENGTH_X = 40;
     public final static int MAP_HEIGHT_Y = 40;
 
+    public final static double K = 2.3;
+    public final static double THRESHOLD = 0.1;
+
     public final static double MAX_RISK_AVERSION = 1.0;
     public final static double MAX_PERCEIVED_HARDSHIP = 1.0;
 
@@ -13,5 +16,6 @@ public class Controller {
 
         Board board = new Board();
         board.printBoard();
+
     }
 }
