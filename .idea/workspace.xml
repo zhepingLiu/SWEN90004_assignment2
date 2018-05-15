@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1a813f1b-d119-4c65-a169-9a88584691d9" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/Character.java" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/out/production/Project_2_zhepingl_zewenx/Controller.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/Agent.java" afterPath="$PROJECT_DIR$/src/Agent.java" />
-      <change beforePath="$PROJECT_DIR$/src/Board.java" afterPath="$PROJECT_DIR$/src/Board.java" />
-      <change beforePath="$PROJECT_DIR$/src/Controller.java" afterPath="$PROJECT_DIR$/src/Controller.java" />
-      <change beforePath="$PROJECT_DIR$/src/Cop.java" afterPath="$PROJECT_DIR$/src/Cop.java" />
-      <change beforePath="$PROJECT_DIR$/src/Patch.java" afterPath="$PROJECT_DIR$/src/Patch.java" />
-    </list>
+    <list default="true" id="1a813f1b-d119-4c65-a169-9a88584691d9" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -355,12 +346,12 @@
       <workItem from="1526000844706" duration="11000" />
       <workItem from="1526012398264" duration="3573000" />
       <workItem from="1526039664694" duration="2644000" />
-      <workItem from="1526353869505" duration="4145000" />
+      <workItem from="1526353869505" duration="4208000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15095000" />
+    <option name="totallyTimeSpent" value="15158000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
