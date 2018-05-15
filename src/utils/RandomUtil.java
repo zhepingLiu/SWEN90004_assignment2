@@ -5,7 +5,7 @@ public class RandomUtil {
 		return (int) (Math.random()*range);
 	}
 	
-	public static double getRandomDouble(int range){
+	public static double getRandomDouble(double range){
 		return Math.random()*range;
 	}
 }

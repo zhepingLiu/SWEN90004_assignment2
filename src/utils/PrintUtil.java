@@ -15,8 +15,8 @@ public class PrintUtil {
 	}
 	
 	public void printBoard(Patch[][][] patchs){
-		for (int i = 0; i < 40; i++) {
-			for (int j = 0; j < 40; j++) {
+		for (int i = 0; i < Const.board_size; i++) {
+			for (int j = 0; j < Const.board_size; j++) {
 				if (!(patchs[0][i][j] instanceof Empty)) {
 					System.out.print(patchs[0][i][j].toString());
 				}
