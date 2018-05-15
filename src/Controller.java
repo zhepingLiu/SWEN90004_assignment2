@@ -12,6 +12,8 @@ public class Controller {
     public final static double AGENT_DENSITY = 0.8;
     public final static double COP_DENSITY = 0.1;
 
+    public final static int MAX_JAIL_TERM = 30;
+
     public final static double MAX_RISK_AVERSION = 1.0;
     public final static double MAX_PERCEIVED_HARDSHIP = 1.0;
 
@@ -20,7 +22,7 @@ public class Controller {
 
     private static Random randomGenerator = new Random();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         //create board
         Board board = new Board();
 
@@ -58,8 +60,79 @@ public class Controller {
             agents.add(agent);
         }
 
-        //TODO: to GO
-        //TODO: update the state and behaviour of agents and cops
+        int tick = 0;
 
+        //TODO: to GO
+        //TODO: Step 1 : move cops and agents not in jail
+        while (true) {
+
+            for (Cop c : cops) {
+                //reset moved back to false at the beginning of every tick
+                c.setMoved(false);
+                for (Patch p : c.getPosition().getNeighbourhood()) {
+                    if (!p.isOccupied()) {
+                        c.move(p);
+                        break;
+                    }
+                }
+            }
+
+            for (Agent a : agents) {
+                //reset moved back to false at the beginning of every tick
+                a.setMoved(false);
+                if (!a.isJailed()) {
+                    //occupy the patch in case the agents are just released
+                    //from the jail
+                    a.getPosition().occupy();
+                    for (Patch p : a.getPosition().getNeighbourhood()) {
+                        if (!p.isOccupied()) {
+                            a.move(p);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            //TODO: Step 2 : determine behaviour of all agents
+            for (Agent a : agents) {
+                int copsCount = 0;
+                int activeCount = 0;
+
+                for (Patch p : a.getPosition().getNeighbourhood()) {
+                    if (p.isOccupied()) {
+                        //count number of cops and active agents
+                        if (p.getCharacter() instanceof Cop) {
+                            copsCount++;
+                            System.out.println("Cops Count : " + copsCount);
+                        } else if (p.getCharacter() instanceof Agent) {
+                            activeCount++;
+                            System.out.println("Active Count : " + activeCount);
+                        }
+                    }
+                }
+
+                //a.determineBehaviour(copsCount, activeCount);
+            }
+
+            //TODO: Step 3 : all cops enforce
+            for (Cop c : cops) {
+                for (Patch p : c.getPosition().getNeighbourhood()) {
+                    if (p.getCharacter() instanceof Agent &&
+                            ((Agent) p.getCharacter()).isActive()) {
+                        //TODO: this does not randomly pick up one to arrest,
+                        //TODO; instead, it arrests the first one he found
+                        ((Agent) p.getCharacter()).setJailTerm
+                                (randomGenerator.nextInt(MAX_JAIL_TERM));
+                        //empty the patch
+                        p.empty();
+                        break;
+                    }
+                }
+            }
+            System.out.println("This is tick : " + tick);
+            tick++;
+            //board.printBoard();
+            Thread.sleep(1000);
+        }
     }
 }

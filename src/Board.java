@@ -31,10 +31,6 @@ public class Board {
         }
     }
 
-    public HashMap<Coordinate, Patch> getPatches() {
-        return patches;
-    }
-
     public Patch retrievePatch(int x, int y) {
         return patches.get(keys[x][y]);
     }
@@ -54,44 +50,6 @@ public class Board {
         neighbourhood.add(patches.get(keys[x][y]));
 
         for (int i=1;i<=Controller.VISION;i++) {
-//            if (x + i >= lengthX) {
-//                neighbourhood.add(patches.get(keys[x + i - lengthX][y]));
-//            } else {
-//                neighbourhood.add(patches.get(keys[x + i][y]));
-//            }
-//
-//            if (x - i < 0) {
-//                neighbourhood.add(patches.get(keys[x - i + lengthX][y]));
-//            } else {
-//                neighbourhood.add(patches.get(keys[x - i][y]));
-//            }
-//
-//            if (y + i >= heightY) {
-//                neighbourhood.add(patches.get(keys[x][y + i - heightY]));
-//            } else {
-//                neighbourhood.add(patches.get(keys[x][y + i]));
-//            }
-//
-//            if (y - i < 0) {
-//                neighbourhood.add(patches.get(keys[x][y - i + heightY]));
-//            } else {
-//                neighbourhood.add(patches.get(keys[x][y - i]));
-//            }
-//
-//            if (x + i >= lengthX && y + i >= heightY) {
-//                neighbourhood.add(patches.get(
-//                        keys[x + i - lengthX][y + i - heightY]));
-//            } else {
-//                neighbourhood.add(patches.get(keys[x + i][y + i]));
-//            }
-//
-//            if (x - i < 0 && y - i < 0) {
-//                neighbourhood.add(patches.get(
-//                        keys[x - i + lengthX][y - i + heightY]));
-//            } else {
-//                neighbourhood.add(patches.get(keys[x - i][y - i]));
-//            }
-            //TODO: Try Mod 40 to set X and Y
             int xPlusI = (x + i) % lengthX;
             int xMinusI = (x - i + lengthX) % lengthX;
             int yPlusI = (y + i) % heightY;

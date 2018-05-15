@@ -1,4 +1,4 @@
-public class Cop {
+public class Cop implements Character{
 
     private int id;
     private Patch position;
@@ -21,6 +21,10 @@ public class Cop {
 
     public boolean isMoved() {
         return moved;
+    }
+
+    public void setMoved(boolean moved) {
+        this.moved = moved;
     }
 
     public void move(Patch targetPosition) {

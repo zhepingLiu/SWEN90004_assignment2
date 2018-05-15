@@ -1,7 +1,6 @@
-import java.util.ArrayList;
 import java.util.Random;
 
-public class Agent {
+public class Agent implements Character {
 
     private final static int INITIAL_HEADING = 0;
     private final static int INITIAL_JAIL_TERM = 0;
@@ -51,6 +50,10 @@ public class Agent {
 
     public int getJailTerm() {
         return jailTerm;
+    }
+
+    public boolean isJailed() {
+        return jailTerm != 0;
     }
 
     public void setJailTerm(int jailTerm) {
