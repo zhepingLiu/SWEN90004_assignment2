@@ -70,10 +70,15 @@ public class Board {
     public void printBoard() {
         for (int i=0; i<lengthX; i++) {
             for (int j=0; j<heightY; j++) {
-                if (patches.get(keys[i][j]).isOccupied()) {
-                    System.out.print("1 ");
-                } else {
+                if (!patches.get(keys[i][j]).isOccupied()) {
                     System.out.print("0 ");
+                }
+                else if (patches.get(keys[i][j]).getCharacter() instanceof Cop) {
+                    System.out.print("2 ");
+                }
+                else if (patches.get(keys[i][j]).getCharacter()
+                        instanceof Agent) {
+                    System.out.print("1 ");
                 }
             }
             System.out.print("\n");

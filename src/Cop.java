@@ -7,7 +7,7 @@ public class Cop implements Character{
     public Cop(int id, Patch position) {
         this.id = id;
         this.position = position;
-        this.position.occupy();
+        this.position.occupy(this);
         this.moved = false;
     }
 
@@ -30,7 +30,7 @@ public class Cop implements Character{
     public void move(Patch targetPosition) {
         this.position.empty();
         this.position = targetPosition;
-        this.position.occupy();
+        this.position.occupy(this);
         this.moved = true;
     }
 }

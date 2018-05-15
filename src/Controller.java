@@ -83,7 +83,7 @@ public class Controller {
                 if (!a.isJailed()) {
                     //occupy the patch in case the agents are just released
                     //from the jail
-                    a.getPosition().occupy();
+                    a.getPosition().occupy(a);
                     for (Patch p : a.getPosition().getNeighbourhood()) {
                         if (!p.isOccupied()) {
                             a.move(p);
@@ -103,15 +103,13 @@ public class Controller {
                         //count number of cops and active agents
                         if (p.getCharacter() instanceof Cop) {
                             copsCount++;
-                            System.out.println("Cops Count : " + copsCount);
                         } else if (p.getCharacter() instanceof Agent) {
                             activeCount++;
-                            System.out.println("Active Count : " + activeCount);
                         }
                     }
                 }
 
-                //a.determineBehaviour(copsCount, activeCount);
+                a.determineBehaviour(copsCount, activeCount);
             }
 
             //TODO: Step 3 : all cops enforce
@@ -131,8 +129,8 @@ public class Controller {
             }
             System.out.println("This is tick : " + tick);
             tick++;
-            //board.printBoard();
-            Thread.sleep(1000);
+            board.printBoard();
+            Thread.sleep(3000);
         }
     }
 }

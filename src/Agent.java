@@ -23,7 +23,7 @@ public class Agent implements Character {
     public Agent(int id, Patch position) {
         this.id = id;
         this.position = position;
-        this.position.occupy();
+        this.position.occupy(this);
         this.heading = INITIAL_HEADING;
         this.riskAversion =
                 randomGenerator.nextDouble() *
@@ -71,7 +71,7 @@ public class Agent implements Character {
     public void move(Patch targetPosition) {
         this.position.empty();
         this.position = targetPosition;
-        this.position.occupy();
+        this.position.occupy(this);
         this.moved = true;
     }
 

@@ -26,10 +26,6 @@ public class Patch {
         return character;
     }
 
-    public void setCharacter(Character character) {
-        this.character = character;
-    }
-
     public void setNeighbourhood(ArrayList<Patch> neighbourhood) {
         this.neighbourhood = neighbourhood;
     }
@@ -38,8 +34,9 @@ public class Patch {
         return neighbourhood;
     }
 
-    public void occupy() {
+    public void occupy(Character character) {
         this.occupied = true;
+        this.character = character;
     }
 
     public void empty() {
