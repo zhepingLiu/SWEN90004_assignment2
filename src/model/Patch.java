@@ -18,7 +18,28 @@ public class Patch {
 	public void putAgentInJail(Agent agent){
 		JailedList.add(agent);
 	}
+	public Agent getReleasedAgent(){
+		Agent returnAgent = null;
+		if (isAnyAgentsJailed()) {
+			
+			for (Agent agent : JailedList) {
+				if (agent.getJailTerm() == 0) {
+					returnAgent = agent;
+					break;
+				}
+			}
+			JailedList.remove(returnAgent);	
+		}		
+		return returnAgent;
+	}
 
+	public void reduceJailTerm() {
+		for (Agent agent : JailedList) {
+			agent.reduceJailTerm();
+		}
+		
+	}
+	
 	public boolean isMove() {
 		return moved;
 	}
@@ -61,4 +82,5 @@ public class Patch {
 		// TODO Auto-generated method stub
 		return "" + this.state;
 	}
+
 }

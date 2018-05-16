@@ -4,7 +4,6 @@ import utils.Const;
 import utils.RandomUtil;
 
 public class Agent extends Patch {
-	// state 2 quite , 3 active, 4 jailed
 
 	private double riskAversion;
 	private double perceivedHardship;
@@ -28,6 +27,17 @@ public class Agent extends Patch {
 
 	public void setJailTerm(int jailTerm) {
 		this.jailTerm = jailTerm;
+	}
+	
+	public void reduceJailTerm(){
+		if (jailTerm>0) {
+			this.jailTerm--;
+		}
+		
+	}
+	
+	public int getJailTerm() {
+		return jailTerm;
 	}
 	
 	public void reportGrievance() {
