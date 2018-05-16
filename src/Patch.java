@@ -1,8 +1,12 @@
 import java.util.ArrayList;
 
 public class Patch {
+
+    private static final int EMPTY_JAIL = 0;
+
     private Coordinate coordinate;
     private boolean occupied;
+    private int jailNumber;
     private ArrayList<Patch> neighbourhood;
     private Character character;
 
@@ -10,6 +14,7 @@ public class Patch {
     public Patch(Coordinate coordinate) {
         this.coordinate = coordinate;
         this.occupied = false;
+        this.jailNumber = EMPTY_JAIL;
         neighbourhood = null;
         character = null;
     }
@@ -20,6 +25,18 @@ public class Patch {
 
     public boolean isOccupied() {
         return occupied;
+    }
+
+    public boolean isJailed() {
+        return jailNumber > EMPTY_JAIL;
+    }
+
+    public void increaseJailNumber() {
+        this.jailNumber++;
+    }
+
+    public void decreaseJailNumber() {
+        this.jailNumber--;
     }
 
     public Character getCharacter() {
@@ -41,5 +58,6 @@ public class Patch {
 
     public void empty() {
         this.occupied = false;
+        this.character = null;
     }
 }

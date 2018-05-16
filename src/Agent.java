@@ -97,7 +97,10 @@ public class Agent implements Character {
                 active = false;
             }
         } else {
-            jailTerm--;
+            if (jailTerm-- == 0) {
+                this.active = false;
+                this.position.decreaseJailNumber();
+            }
         }
     }
 }
