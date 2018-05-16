@@ -1,10 +1,16 @@
+import java.io.FileWriter;
+import java.io.IOException;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Controller {
 
-    public final static int MAP_LENGTH_X = 5;
-    public final static int MAP_HEIGHT_Y = 5;
+    public final static int MAP_LENGTH_X = 40;
+    public final static int MAP_HEIGHT_Y = 40;
 
     public final static double K = 2.3;
     public final static double THRESHOLD = 0.1;
@@ -12,19 +18,22 @@ public class Controller {
     public final static boolean MOVEMENT = true;
 
     public final static double AGENT_DENSITY = 0.7;
-    public final static double COP_DENSITY = 0.2;
+    public final static double COP_DENSITY = 0.04;
 
-    public final static int MAX_JAIL_TERM = 5;
+    public final static int MAX_JAIL_TERM = 30;
 
     public final static double MAX_RISK_AVERSION = 1.0;
     public final static double MAX_PERCEIVED_HARDSHIP = 1.0;
 
-    public static double GOVERNMENT_LEGITIMACY = 0.4;
-    public static int VISION = 4;
+    public static double GOVERNMENT_LEGITIMACY = 0.62;
+    public static int VISION = 7;
 
     private static Random randomGenerator = new Random();
 
     public static void main(String[] args) throws InterruptedException {
+
+        //TODO: write csv data
+        ArrayList<ArrayList> data = new ArrayList<>();
 
         //create board
         Board board = new Board();
@@ -34,6 +43,7 @@ public class Controller {
 
         //create cops
         int numberOfCops = (int)(COP_DENSITY * MAP_LENGTH_X * MAP_HEIGHT_Y);
+        System.out.println(numberOfCops);
 
         for (int i=0;i<numberOfCops;i++) {
 
@@ -52,6 +62,7 @@ public class Controller {
 
         //create agents
         int numberOfAgents = (int)(AGENT_DENSITY * MAP_LENGTH_X * MAP_HEIGHT_Y);
+        System.out.println(numberOfAgents);
 
         for (int i=0;i<numberOfAgents;i++) {
             int x = randomGenerator.nextInt(MAP_LENGTH_X);
@@ -70,11 +81,11 @@ public class Controller {
         int tick = 0;
 
         //print the board at tick 0
-        System.out.println("This is tick : " + tick);
-        board.printBoard();
+//        System.out.println("This is tick : " + tick);
+//        board.printBoard();
 
         //TODO: Step 1 : move cops and agents not in jail
-        while (true) {
+        while (tick < 1000) {
 
             for (Cop c : cops) {
                 //reset moved back to false at the beginning of every tick
@@ -116,7 +127,6 @@ public class Controller {
 
             //TODO: Step 2 : determine behaviour of all agents
             for (Agent a : agents) {
-
                 if (!a.isJailed()) {
                     int copsCount = 0;
                     int activeCountNeighbour = 0;
@@ -214,12 +224,70 @@ public class Controller {
             }
 
             tick++;
-            System.out.println("This is tick : " + tick);
-            board.printBoard();
-            System.out.println("Jailed Count : " + jailedCount);
-            System.out.println("Active Count : " + activeCount);
-            System.out.println("Quiet Count : " + quietCount);
-            Thread.sleep(1000);
+//            System.out.println("This is tick : " + tick);
+//            board.printBoard();
+//            System.out.println("Jailed Count : " + jailedCount);
+//            System.out.println("Active Count : " + activeCount);
+//            System.out.println("Quiet Count : " + quietCount);
+//            Thread.sleep(1000);
+
+            ArrayList<Integer> dataNumber = new ArrayList<>();
+
+            dataNumber.add(tick);
+            dataNumber.add(quietCount);
+            dataNumber.add(activeCount);
+            dataNumber.add(jailedCount);
+            data.add(dataNumber);
         }
+
+        printCSV(data, "rebellion.csv");
+    }
+
+    public static void printCSV(ArrayList<ArrayList> datas, String fileName) {
+        //Delimiter used in CSV file
+        final String NEW_LINE_SEPARATOR = "\n";
+
+        //CSV file header
+        final Object [] FILE_HEADER = {"tick","quiet","active","jailed"};
+
+        FileWriter fileWriter = null;
+
+        CSVPrinter csvFilePrinter = null;
+
+        //Create the CSVFormat object with "\n" as a record delimiter
+        CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
+
+        try {
+            //initialize FileWriter object
+            fileWriter = new FileWriter(fileName);
+
+            //initialize CSVPrinter object
+            csvFilePrinter = new CSVPrinter(fileWriter, csvFileFormat);
+
+            //Create CSV file header
+            csvFilePrinter.printRecord(FILE_HEADER);
+
+            //Write a new student object list to the CSV file
+            for (ArrayList list : datas) {
+
+                csvFilePrinter.printRecord(list);
+            }
+
+            System.out.println("CSV file was created successfully !!!");
+
+        } catch (Exception e) {
+            System.out.println("Error in CsvFileWriter !!!");
+            e.printStackTrace();
+        } finally {
+            try {
+                fileWriter.flush();
+                fileWriter.close();
+                csvFilePrinter.close();
+            } catch (IOException e) {
+                System.out.println("Error while flushing/closing fileWriter/csvPrinter !!!");
+                e.printStackTrace();
+            }
+        }
+
     }
 }
