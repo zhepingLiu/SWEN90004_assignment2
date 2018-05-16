@@ -71,14 +71,35 @@ public class Controller {
 	}
 
 	void start() {
-		move();
-		determineBehaviour();
-		// TODO
-//		reduceJailTerm();
-		enforce();
-		
-		System.out.println();
-		PrintUtil.getInstance().printBoard(board.getPatchs());
+		int count =0;
+		while (count++<10) {
+
+			move();
+			System.out.println();
+			PrintUtil.getInstance().printBoard(board.getPatchs());
+			determineBehaviour();
+			reduceJailTerm();
+			System.out.println();
+			PrintUtil.getInstance().printBoard(board.getPatchs());
+			enforce();
+
+			System.out.println();
+			PrintUtil.getInstance().printBoard(board.getPatchs());
+
+			System.out.println("****************************");
+		}
+	}
+
+	private void reduceJailTerm() {
+		Patch[][][] patches = board.getPatchs();
+		for (int i = 0; i < Const.board_size; i++) {
+			for (int j = 0; j < Const.board_size; j++) {
+				Patch patch = patches[0][i][j];
+				if (patch.isAnyAgentsJailed()) {
+					patch.reduceJailTerm();
+				}
+			}
+		}
 	}
 
 	private void enforce() {
@@ -86,48 +107,49 @@ public class Controller {
 		ArrayList<Patch> activeAgents = new ArrayList<>();
 		for (int i = 0; i < Const.board_size; i++) {
 			for (int j = 0; j < Const.board_size; j++) {
-				if(patches[1][i][j] instanceof Cop){
+				if (patches[1][i][j] instanceof Cop) {
 					for (Coordinate temp : board.getNeighbourhood(i, j)) {
-						 if (patches[1][temp.getX()][temp.getY()] instanceof Agent && patches[1][temp.getX()][temp.getY()].getState() == Const.AGENT_ACTIVE) {
+						if (patches[1][temp.getX()][temp.getY()] instanceof Agent && patches[1][temp.getX()][temp.getY()].getState() == Const.AGENT_ACTIVE) {
 							activeAgents.add(patches[1][temp.getX()][temp.getY()]);
 						}
 					}
 					int activeNum = activeAgents.size();
-					if (activeNum >0) {
+					if (activeNum > 0) {
 						Agent randomAgent = (Agent) activeAgents.get(RandomUtil.getRandomInt(activeNum));
 						randomAgent.setJailTerm(RandomUtil.getRandomInt(configure.getMax_jail_term()));
 						randomAgent.setState(Const.AGENT_JAILED);
-						patches[0][i][j].putAgentInJail(randomAgent);
-						patches[1][i][j] = new Empty(randomAgent.getCoordinate().getX(),randomAgent.getCoordinate().getY(),configure.getVision());
+						int agentx = randomAgent.getCoordinate().getX();
+						int agenty = randomAgent.getCoordinate().getY();
+						
+						patches[0][agentx][agenty].putAgentInJail(randomAgent);
+						patches[1][agentx][agenty] = new Empty(agentx, agenty, configure.getVision());
 					}
 				}
 			}
 		}
 	}
 
-	private void determineBehaviour() {	
+	private void determineBehaviour() {
 		Patch[][][] patches = board.getPatchs();
-		int copNumInNeighbour =0;
+		int copNumInNeighbour = 0;
 		int activeNumInNeighbour = 0;
 		for (int i = 0; i < Const.board_size; i++) {
 			for (int j = 0; j < Const.board_size; j++) {
-				if(patches[1][i][j] instanceof Agent){
-					
-					
+				if (patches[1][i][j] instanceof Agent) {
+
 					for (Coordinate temp : board.getNeighbourhood(i, j)) {
 						if (patches[1][temp.getX()][temp.getY()] instanceof Cop) {
-							copNumInNeighbour ++ ;
-						}else if (patches[1][temp.getX()][temp.getY()] instanceof Agent && patches[1][temp.getX()][temp.getY()].getState() == Const.AGENT_ACTIVE) {
-							activeNumInNeighbour ++ ;
+							copNumInNeighbour++;
+						} else if (patches[1][temp.getX()][temp.getY()] instanceof Agent && patches[1][temp.getX()][temp.getY()].getState() == Const.AGENT_ACTIVE) {
+							activeNumInNeighbour++;
 						}
 					}
-					
-					((Agent)patches[1][i][j]).determineBehaviour(copNumInNeighbour, activeNumInNeighbour);
+
+					((Agent) patches[1][i][j]).determineBehaviour(copNumInNeighbour, activeNumInNeighbour);
 				}
 			}
 		}
-		
-        
+
 	}
 
 	private void move() {
@@ -159,15 +181,43 @@ public class Controller {
 			Coordinate current = emptyPatches.poll();
 			int currentX = current.getX();
 			int currentY = current.getY();
-			
+			Patch agentReleased = null;
 			for (Coordinate temp : board.getNeighbourhood(currentX, currentY)) {
 				Patch patch = patches[1][temp.getX()][temp.getY()];
+
+				if (!configure.isMovement() && patches[1][temp.getX()][temp.getY()] instanceof Empty) {
+					agentReleased = patches[0][temp.getX()][temp.getY()].getReleasedAgent();
+				} else if (configure.isMovement()) {
+					agentReleased = patches[0][temp.getX()][temp.getY()].getReleasedAgent();
+				}
+				if (agentReleased != null) {
+					break;
+				}
+
 				if ((configure.isMovement() && patch instanceof Agent) || patch instanceof Cop) {
 					CopsOrAgents.add(patch);
 				}
+
 			}
-//			System.out.println(emptyPatches.size()+" *");
-//			System.out.println(CopsOrAgents.size());
+			// System.out.println(emptyPatches.size()+" *");
+			// System.out.println(CopsOrAgents.size());
+			// if any agent is just released from the jail and agent cannot
+			// move, reveal it in the board
+			if (!configure.isMovement() && agentReleased != null) {
+				((Agent) agentReleased).setState(Const.AGENT_Quiet);
+				patches[1][agentReleased.getCoordinate().getX()][agentReleased.getCoordinate().getY()] = agentReleased;
+				continue;
+			}
+			// if any agent is just released from the jail and agent can move,
+			// then move it to the empty patch.
+			if (configure.isMovement() && agentReleased != null) {
+				((Agent) agentReleased).setState(Const.AGENT_Quiet);
+				agentReleased.setMoved();
+				agentReleased.setCoordinate(currentX, currentY);
+				patches[1][currentX][currentY] = agentReleased;
+				continue;
+			}
+
 			while (CopsOrAgents.size() > 0) {
 				int randomOne = RandomUtil.getRandomInt(CopsOrAgents.size());
 				Patch patch = CopsOrAgents.get(randomOne);
@@ -181,7 +231,7 @@ public class Controller {
 					patches[1][patchX][patchY] = newEmpty;
 					emptyPatches.add(newEmpty.getCoordinate());
 					break;
-				}else{
+				} else {
 					CopsOrAgents.remove(patch);
 				}
 			}
