@@ -22,6 +22,8 @@ public class Board {
 
 	private ConfigureVO configureVO;
 	private ArrayList<Coordinate>[][] neighbourhood = new ArrayList[Const.board_size][Const.board_size];
+	
+	private ArrayList<Agent> agents = new ArrayList<>();
 
 	public Board(ConfigureVO vo) {
 		patches = new Patch[2][Const.board_size][Const.board_size];
@@ -85,8 +87,9 @@ public class Board {
 					y++;
 				}
 			}
-			patches[1][x][y] = new Agent(x,y,configureVO.getVision(),configureVO.getGoverment_legitimacy());
-			
+			Agent newAgent = new  Agent(x,y,configureVO.getVision(),configureVO.getGoverment_legitimacy());			
+			agents.add(newAgent);
+			patches[1][x][y] = newAgent;			
 		}
 		
 		for (int i = 0; i < copNum; i++) {
@@ -112,5 +115,7 @@ public class Board {
 		return patches;
 	}
 	
-	
+	public ArrayList<Agent> getAgents() {
+		return agents;
+	}
 }

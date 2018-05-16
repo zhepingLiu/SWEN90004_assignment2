@@ -1,10 +1,13 @@
 package Controller;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -13,8 +16,12 @@ import java.util.Queue;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+
 import com.google.gson.Gson;
 import com.sun.org.apache.xpath.internal.axes.PathComponent;
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 import configure.ConfigureVO;
 import model.Agent;
@@ -30,23 +37,17 @@ import utils.RandomUtil;
 public class Controller {
 	Board board;
 	ConfigureVO configure;
-
 	void init() {
-
-		// ConfigureVO vo = new ConfigureVO();
-		// vo.setGoverment_legitimacy(0.62);
-		// vo.setInitial_agent_density(0.Const.board_size);
-		// vo.setInitial_cop_density(0.02);
-		// vo.setMax_jail_term(10);
-		// vo.setMovement(false);
-		// vo.setVision(7.9);
-
 		Gson gson = new Gson();
 		FileReader reader = null;
+
 		try {
 			reader = new FileReader(new File("configure.json"));
 			configure = gson.fromJson(reader, ConfigureVO.class);
 		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
@@ -71,23 +72,55 @@ public class Controller {
 	}
 
 	void start() {
-		int count =0;
-		while (count++<10) {
+		int count = 0;
+		ArrayList<ArrayList> datas = new ArrayList<>();
+		while (count++ < 1000) {
 
 			move();
-			System.out.println();
-			PrintUtil.getInstance().printBoard(board.getPatchs());
+			// System.out.println();
+			// PrintUtil.getInstance().printBoard(board.getPatchs());
 			determineBehaviour();
 			reduceJailTerm();
-			System.out.println();
-			PrintUtil.getInstance().printBoard(board.getPatchs());
+			// System.out.println();
+			// PrintUtil.getInstance().printBoard(board.getPatchs());
 			enforce();
 
 			System.out.println();
 			PrintUtil.getInstance().printBoard(board.getPatchs());
 
 			System.out.println("****************************");
+
+			PrintUtil.getInstance().printAgents(board.getAgents());
+			datas.add(generateData(count, board.getAgents()));
 		}
+		PrintUtil.getInstance().printCSV(datas,"temp.csv");
+	}
+
+	ArrayList<String> generateData(int id ,ArrayList<Agent> agents) {
+		int quietCount = 0;
+		int activeCount = 0;
+		int jailedCount = 0;
+		for (Agent agent : agents) {
+			switch (agent.getState()) {
+			case Const.AGENT_ACTIVE:
+				activeCount++;
+				break;
+			case Const.AGENT_Quiet:
+				quietCount++;
+				break;
+			case Const.AGENT_JAILED:
+				jailedCount++;
+				break;
+			default:
+				break;
+			}
+		}
+		ArrayList<String> oneLine = new ArrayList<>();
+//		oneLine.add(""+id);
+		oneLine.add(""+quietCount);
+		oneLine.add(""+activeCount);
+		oneLine.add(""+jailedCount);
+		return oneLine;
 	}
 
 	private void reduceJailTerm() {
@@ -109,7 +142,8 @@ public class Controller {
 			for (int j = 0; j < Const.board_size; j++) {
 				if (patches[1][i][j] instanceof Cop) {
 					for (Coordinate temp : board.getNeighbourhood(i, j)) {
-						if (patches[1][temp.getX()][temp.getY()] instanceof Agent && patches[1][temp.getX()][temp.getY()].getState() == Const.AGENT_ACTIVE) {
+						if (patches[1][temp.getX()][temp.getY()] instanceof Agent
+								&& patches[1][temp.getX()][temp.getY()].getState() == Const.AGENT_ACTIVE) {
 							activeAgents.add(patches[1][temp.getX()][temp.getY()]);
 						}
 					}
@@ -120,9 +154,10 @@ public class Controller {
 						randomAgent.setState(Const.AGENT_JAILED);
 						int agentx = randomAgent.getCoordinate().getX();
 						int agenty = randomAgent.getCoordinate().getY();
-						
+
 						patches[0][agentx][agenty].putAgentInJail(randomAgent);
 						patches[1][agentx][agenty] = new Empty(agentx, agenty, configure.getVision());
+						activeAgents.clear();
 					}
 				}
 			}
@@ -140,7 +175,8 @@ public class Controller {
 					for (Coordinate temp : board.getNeighbourhood(i, j)) {
 						if (patches[1][temp.getX()][temp.getY()] instanceof Cop) {
 							copNumInNeighbour++;
-						} else if (patches[1][temp.getX()][temp.getY()] instanceof Agent && patches[1][temp.getX()][temp.getY()].getState() == Const.AGENT_ACTIVE) {
+						} else if (patches[1][temp.getX()][temp.getY()] instanceof Agent
+								&& patches[1][temp.getX()][temp.getY()].getState() == Const.AGENT_ACTIVE) {
 							activeNumInNeighbour++;
 						}
 					}
@@ -196,6 +232,9 @@ public class Controller {
 
 				if ((configure.isMovement() && patch instanceof Agent) || patch instanceof Cop) {
 					CopsOrAgents.add(patch);
+					if (patch.getState() == Const.AGENT_JAILED) {
+						System.out.println("Wrong");
+					}
 				}
 
 			}
@@ -206,6 +245,8 @@ public class Controller {
 			if (!configure.isMovement() && agentReleased != null) {
 				((Agent) agentReleased).setState(Const.AGENT_Quiet);
 				patches[1][agentReleased.getCoordinate().getX()][agentReleased.getCoordinate().getY()] = agentReleased;
+				removeEmptyPatchInQueue(emptyPatches, agentReleased.getCoordinate().getX(),
+						agentReleased.getCoordinate().getY());
 				continue;
 			}
 			// if any agent is just released from the jail and agent can move,
@@ -222,6 +263,7 @@ public class Controller {
 				int randomOne = RandomUtil.getRandomInt(CopsOrAgents.size());
 				Patch patch = CopsOrAgents.get(randomOne);
 				if (!patch.getMove()) {
+
 					int patchX = patch.getCoordinate().getX();
 					int patchY = patch.getCoordinate().getY();
 					patch.setMoved();
@@ -237,6 +279,18 @@ public class Controller {
 			}
 			CopsOrAgents.clear();
 		}
+	}
+
+	private void removeEmptyPatchInQueue(Queue<Coordinate> emptyPatches, int x, int y) {
+		Iterator<Coordinate> iterable = emptyPatches.iterator();
+		while (iterable.hasNext()) {
+			Coordinate temp = iterable.next();
+			if (temp.equals(new Coordinate(x, y))) {
+				emptyPatches.remove(temp);
+				return;
+			}
+		}
+
 	}
 
 }

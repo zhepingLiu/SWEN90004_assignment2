@@ -1,7 +1,7 @@
 package utils;
 
 public class Const {
-	public final static int board_size = 4;
+	public final static int board_size = 40;
 	public final static double K = 2.3;
     public final static double THRESHOLD = 0.1;
     public final static double MAX_RISK_AVERSION = 1.0;

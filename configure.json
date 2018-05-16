@@ -1,8 +1,8 @@
 {
-	"initial_cop_density":0.20,
+	"initial_cop_density":0.04,
 	"initial_agent_density":0.70,
-	"vision":3,
-	"goverment_legitimacy":0.62,
-	"max_jail_term":7,
+	"vision":7,
+	"goverment_legitimacy":0.82,
+	"max_jail_term":30,
 	"movement":true
 }
