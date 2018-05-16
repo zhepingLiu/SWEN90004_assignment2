@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Set;
 
 public class Patch {
 
@@ -7,7 +8,7 @@ public class Patch {
     private Coordinate coordinate;
     private boolean occupied;
     private int jailNumber;
-    private ArrayList<Patch> neighbourhood;
+    private Set<Patch> neighbourhood;
     private Character character;
 
 
@@ -31,6 +32,10 @@ public class Patch {
         return jailNumber > EMPTY_JAIL;
     }
 
+    public int getJailNumber() {
+        return jailNumber;
+    }
+
     public void increaseJailNumber() {
         this.jailNumber++;
     }
@@ -43,11 +48,11 @@ public class Patch {
         return character;
     }
 
-    public void setNeighbourhood(ArrayList<Patch> neighbourhood) {
+    public void setNeighbourhood(Set<Patch> neighbourhood) {
         this.neighbourhood = neighbourhood;
     }
 
-    public ArrayList<Patch> getNeighbourhood() {
+    public Set<Patch> getNeighbourhood() {
         return neighbourhood;
     }
 

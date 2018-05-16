@@ -6,7 +6,7 @@ public class Agent implements Character {
     private final static int INITIAL_JAIL_TERM = 0;
 
     private int id;
-    private Patch position;
+    private Coordinate position;
     private int heading;
 
     private double riskAversion;
@@ -15,15 +15,16 @@ public class Agent implements Character {
     private double estimatedArrestProbability;
 
     private boolean active;
+    private boolean jailed;
     private int jailTerm;
     private boolean moved;
 
     private Random randomGenerator = new Random();
 
-    public Agent(int id, Patch position) {
+    public Agent(int id, Coordinate position) {
         this.id = id;
         this.position = position;
-        this.position.occupy(this);
+        //this.position.occupy(this);
         this.heading = INITIAL_HEADING;
         this.riskAversion =
                 randomGenerator.nextDouble() *
@@ -36,11 +37,7 @@ public class Agent implements Character {
         this.moved = false;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public Patch getPosition() {
+    public Coordinate getPosition() {
         return position;
     }
 
@@ -48,16 +45,30 @@ public class Agent implements Character {
         return active;
     }
 
+    public void deActive() {
+        this.active = false;
+    }
+
+    public boolean isJailed() {
+        return jailed;
+    }
+
+    public void setJailed(boolean jailed) {
+        this.jailed = jailed;
+    }
+
     public int getJailTerm() {
         return jailTerm;
     }
 
-    public boolean isJailed() {
-        return jailTerm != 0;
-    }
-
     public void setJailTerm(int jailTerm) {
         this.jailTerm = jailTerm;
+    }
+
+    public void decreaseJailTerm() {
+        if (jailTerm > 0) {
+            jailTerm--;
+        }
     }
 
     public boolean isMoved() {
@@ -68,10 +79,10 @@ public class Agent implements Character {
         this.moved = moved;
     }
 
-    public void move(Patch targetPosition) {
-        this.position.empty();
+    public void move(Coordinate targetPosition) {
+        //this.position.empty();
         this.position = targetPosition;
-        this.position.occupy(this);
+        //this.position.occupy(this);
         this.moved = true;
     }
 
@@ -87,20 +98,15 @@ public class Agent implements Character {
     }
 
     public void determineBehaviour(int copsCount, int activeCount) {
-        if (jailTerm == 0) {
-            reportGrievance();
-            reportArrestProbability(copsCount, activeCount);
-            if (this.grievance - riskAversion * estimatedArrestProbability
-                    > Controller.THRESHOLD) {
-                this.active = true;
-            } else {
-                active = false;
-            }
+
+        reportGrievance();
+        reportArrestProbability(copsCount, activeCount);
+
+        if (this.grievance - riskAversion * estimatedArrestProbability
+                > Controller.THRESHOLD) {
+            this.active = true;
         } else {
-            if (jailTerm-- == 0) {
-                this.active = false;
-                this.position.decreaseJailNumber();
-            }
+            active = false;
         }
     }
 }

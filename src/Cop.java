@@ -1,13 +1,13 @@
 public class Cop implements Character{
 
     private int id;
-    private Patch position;
+    private Coordinate position;
     private boolean moved;
 
-    public Cop(int id, Patch position) {
+    public Cop(int id, Coordinate position) {
         this.id = id;
         this.position = position;
-        this.position.occupy(this);
+        //this.position.occupy(this);
         this.moved = false;
     }
 
@@ -15,7 +15,7 @@ public class Cop implements Character{
         return id;
     }
 
-    public Patch getPosition() {
+    public Coordinate getPosition() {
         return position;
     }
 
@@ -27,10 +27,10 @@ public class Cop implements Character{
         this.moved = moved;
     }
 
-    public void move(Patch targetPosition) {
-        this.position.empty();
+    public void move(Coordinate targetPosition) {
+        //this.position.empty();
         this.position = targetPosition;
-        this.position.occupy(this);
+        //this.position.occupy(this);
         this.moved = true;
     }
 }

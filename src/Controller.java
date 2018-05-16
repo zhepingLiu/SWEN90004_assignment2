@@ -11,15 +11,15 @@ public class Controller {
 
     public final static boolean MOVEMENT = true;
 
-    public final static double AGENT_DENSITY = 0.8;
-    public final static double COP_DENSITY = 0.1;
+    public final static double AGENT_DENSITY = 0.7;
+    public final static double COP_DENSITY = 0.2;
 
     public final static int MAX_JAIL_TERM = 5;
 
     public final static double MAX_RISK_AVERSION = 1.0;
     public final static double MAX_PERCEIVED_HARDSHIP = 1.0;
 
-    public static double GOVERNMENT_LEGITIMACY = 0.7;
+    public static double GOVERNMENT_LEGITIMACY = 0.4;
     public static int VISION = 4;
 
     private static Random randomGenerator = new Random();
@@ -36,6 +36,7 @@ public class Controller {
         int numberOfCops = (int)(COP_DENSITY * MAP_LENGTH_X * MAP_HEIGHT_Y);
 
         for (int i=0;i<numberOfCops;i++) {
+
             int x = randomGenerator.nextInt(MAP_LENGTH_X);
             int y = randomGenerator.nextInt(MAP_HEIGHT_Y);
 
@@ -44,8 +45,9 @@ public class Controller {
                  y = randomGenerator.nextInt(MAP_HEIGHT_Y);
             }
 
-            Cop cop = new Cop(i, board.retrievePatch(x, y));
+            Cop cop = new Cop(i, new Coordinate(x, y));
             cops.add(cop);
+            board.retrievePatch(x, y).occupy(cop);
         }
 
         //create agents
@@ -54,13 +56,15 @@ public class Controller {
         for (int i=0;i<numberOfAgents;i++) {
             int x = randomGenerator.nextInt(MAP_LENGTH_X);
             int y = randomGenerator.nextInt(MAP_HEIGHT_Y);
+
             while (board.retrievePatch(x, y).isOccupied()) {
                 x = randomGenerator.nextInt(MAP_LENGTH_X);
                 y = randomGenerator.nextInt(MAP_HEIGHT_Y);
             }
 
-            Agent agent = new Agent(i, board.retrievePatch(x, y));
+            Agent agent = new Agent(i, new Coordinate(x, y));
             agents.add(agent);
+            board.retrievePatch(x, y).occupy(agent);
         }
 
         int tick = 0;
@@ -75,9 +79,14 @@ public class Controller {
             for (Cop c : cops) {
                 //reset moved back to false at the beginning of every tick
                 c.setMoved(false);
-                for (Patch p : c.getPosition().getNeighbourhood()) {
+                int x = c.getPosition().getPositionX();
+                int y = c.getPosition().getPositionY();
+
+                for (Patch p : board.retrievePatch(x, y).getNeighbourhood())
+                {
                     if (!p.isOccupied()) {
-                        c.move(p);
+                        c.move(p.getCoordinate());
+                        board.retrievePatch(x, y).occupy(c);
                         break;
                     }
                 }
@@ -88,12 +97,16 @@ public class Controller {
                     //reset moved back to false at the beginning of every tick
                     a.setMoved(false);
                     if (!a.isJailed()) {
-                        //occupy the patch in case the agents are just released
-                        //from the jail
-                        a.getPosition().occupy(a);
-                        for (Patch p : a.getPosition().getNeighbourhood()) {
+
+                        int x = a.getPosition().getPositionX();
+                        int y = a.getPosition().getPositionY();
+
+                        for (Patch p : board.retrievePatch(x, y).
+                                getNeighbourhood())
+                        {
                             if (!p.isOccupied()) {
-                                a.move(p);
+                                a.move(p.getCoordinate());
+                                board.retrievePatch(x, y).occupy(a);
                                 break;
                             }
                         }
@@ -103,22 +116,31 @@ public class Controller {
 
             //TODO: Step 2 : determine behaviour of all agents
             for (Agent a : agents) {
-                int copsCount = 0;
-                int activeCount = 0;
 
-                for (Patch p : a.getPosition().getNeighbourhood()) {
-                    if (p.isOccupied()) {
-                        //count number of cops and active agents
-                        if (p.getCharacter() instanceof Cop) {
-                            copsCount++;
-                        } else if (p.getCharacter() instanceof Agent &&
-                                ((Agent) p.getCharacter()).isActive()) {
-                            activeCount++;
+                if (!a.isJailed()) {
+                    int copsCount = 0;
+                    int activeCountNeighbour = 0;
+
+                    int x = a.getPosition().getPositionX();
+                    int y = a.getPosition().getPositionY();
+
+                    for (Patch p : board.retrievePatch(x, y).
+                            getNeighbourhood())
+                    {
+                        if (p.isOccupied()) {
+                            //count number of cops and active agents
+                            if (p.getCharacter() instanceof Cop)
+                            {
+                                copsCount++;
+                            } else if (p.getCharacter() instanceof Agent &&
+                                    ((Agent) p.getCharacter()).isActive())
+                            {
+                                activeCountNeighbour++;
+                            }
                         }
                     }
+                    a.determineBehaviour(copsCount, activeCountNeighbour);
                 }
-
-                a.determineBehaviour(copsCount, activeCount);
             }
 
             //TODO: Step 3 : all cops enforce
@@ -126,11 +148,15 @@ public class Controller {
                 ArrayList<Character> activeAgentsInNeighbour =
                         new ArrayList<>();
 
-                for (Patch p : c.getPosition().getNeighbourhood()) {
+                int x = c.getPosition().getPositionX();
+                int y = c.getPosition().getPositionY();
+
+                for (Patch p : board.retrievePatch(x, y).getNeighbourhood())
+                {
                     if (p.isOccupied() &&
                             p.getCharacter() instanceof Agent &&
-                            ((Agent) p.getCharacter()).isActive()) {
-
+                            ((Agent) p.getCharacter()).isActive())
+                    {
                         activeAgentsInNeighbour.add(p.getCharacter());
                     }
                 }
@@ -142,20 +168,57 @@ public class Controller {
                     Agent target = (Agent) activeAgentsInNeighbour.
                             get(randomInt);
 
-                    target.setJailTerm
-                            (randomGenerator.nextInt(MAX_JAIL_TERM));
+                    target.setJailTerm(randomGenerator.
+                            nextInt(MAX_JAIL_TERM));
+                    target.setJailed(true);
+                    target.deActive();
+
+                    int targetX = target.getPosition().getPositionX();
+                    int targetY = target.getPosition().getPositionY();
+
                     //empty the patch
-                    target.getPosition().empty();
-                    target.getPosition().increaseJailNumber();
+                    board.retrievePatch(targetX, targetY).empty();
+                    board.retrievePatch(targetX, targetY).increaseJailNumber();
 
                     //move to the jailed agent
                     c.move(target.getPosition());
                 }
             }
 
+            //TODO: Step 4 : update jail terms of all jailed agents
+            for (Agent a : agents) {
+                if (a.isJailed() && a.getJailTerm() > 0) {
+                    a.decreaseJailTerm();
+                }
+
+                if (a.isJailed() && a.getJailTerm() == 0) {
+                    a.setJailed(false);
+                    a.getPosition();
+                }
+            }
+
+            int quietCount = 0;
+            int activeCount = 0;
+            int jailedCount = 0;
+
+            for (Agent a : agents) {
+                if (a.isJailed()) {
+                    jailedCount++;
+                }
+                else if (a.isActive()) {
+                    activeCount++;
+                }
+                else {
+                    quietCount++;
+                }
+            }
+
             tick++;
             System.out.println("This is tick : " + tick);
             board.printBoard();
+            System.out.println("Jailed Count : " + jailedCount);
+            System.out.println("Active Count : " + activeCount);
+            System.out.println("Quiet Count : " + quietCount);
             Thread.sleep(1000);
         }
     }

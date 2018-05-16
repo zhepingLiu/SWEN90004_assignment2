@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Board {
 
@@ -41,9 +43,9 @@ public class Board {
      * @return neighbourhood an ArrayList contains all neighbourhood
      *         patches around the given patch
      */
-    public ArrayList<Patch> getNeighbourhood(Patch patch) {
+    public Set<Patch> getNeighbourhood(Patch patch) {
 
-        ArrayList<Patch> neighbourhood = new ArrayList<>();
+        Set<Patch> neighbourhood = new HashSet<>();
         Coordinate targetCoordinate = patch.getCoordinate();
 
         int x = targetCoordinate.getPositionX();
@@ -79,17 +81,9 @@ public class Board {
     public void printBoard() {
 
         int emptyCount = 0;
-        int quietCount = 0;
-        int activeCount = 0;
-        int jailedCount = 0;
-        int copCount = 0;
 
         for (int i=0; i<lengthX; i++) {
             for (int j=0; j<heightY; j++) {
-
-                if (patches.get(keys[i][j]).isJailed()) {
-                    jailedCount++;
-                }
 
                 if (!patches.get(keys[i][j]).isOccupied()) {
                     if (!patches.get(keys[i][j]).isJailed()) {
@@ -102,17 +96,14 @@ public class Board {
                 else if (patches.get(keys[i][j]).getCharacter() instanceof Cop)
                 {
                     System.out.print("C ");
-                    copCount++;
                 }
                 else if (patches.get(keys[i][j]).getCharacter()
                         instanceof Agent) {
                     if (((Agent) patches.get(keys[i][j]).
                             getCharacter()).isActive()) {
                         System.out.print("A ");
-                        activeCount++;
                     } else {
                         System.out.print("Q ");
-                        quietCount++;
                     }
                 }
             }
@@ -121,9 +112,6 @@ public class Board {
         }
 
         System.out.println("Empty: " + emptyCount);
-        System.out.println("Active: " + activeCount);
-        System.out.println("Quiet: " + quietCount);
-        System.out.println("Jailed: " + jailedCount);
-        System.out.println("Cops: " + copCount);
+
     }
 }
