@@ -18,11 +18,24 @@ import utils.RandomUtil;
 public class Board {
 
 	private Patch[][][] patches;
+	/**
+	 * the number of cops and agents
+	 */
 	private int agentNum, copNum;
 
+	/**
+	 * configuration of the model.
+	 */
 	private ConfigureVO configureVO;
+	
+	/**
+	 * The neighbourhood for every patch
+	 */
 	private ArrayList<Coordinate>[][] neighbourhood = new ArrayList[Const.board_size][Const.board_size];
 	
+	/**
+	 * All the agents in the board
+	 */
 	private ArrayList<Agent> agents = new ArrayList<>();
 
 	public Board(ConfigureVO vo) {
@@ -43,6 +56,9 @@ public class Board {
 	}
 	
 
+	/**
+	 * Calculate the neighbourhood for every patch and store it in the arrays
+	 */
 	private void initNeighbor() {
 		double vision = configureVO.getVision();
 		int intVision = (int) configureVO.getVision();
@@ -61,10 +77,19 @@ public class Board {
 		}
 	}
 
+	/**
+	 * get the neighbourhood for the patch in (x,y) 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public ArrayList<Coordinate> getNeighbourhood(int x, int y){
 		return neighbourhood[x][y];
 	}
 	
+	/**
+	 * initial the first state of board, same as the setup function in the interface of the Netlogo
+	 */
 	private void initPathces() {
 		for (int i = 0; i < Const.board_size; i++) {
 			for (int j = 0; j < Const.board_size; j++) {

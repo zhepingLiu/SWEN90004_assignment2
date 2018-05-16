@@ -4,5 +4,6 @@
 	"vision":7,
 	"goverment_legitimacy":0.82,
 	"max_jail_term":30,
-	"movement":true
+	"movement":true,
+	"tick_time":2000
 }

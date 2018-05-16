@@ -1,5 +1,10 @@
 package model;
 
+/**
+ * @author Zewen Xu
+ *
+ * the Coordinate of every patch on the board
+ */
 public class Coordinate {
 	int x ;
 	int y;

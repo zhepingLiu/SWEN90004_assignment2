@@ -5,11 +5,33 @@ import com.google.gson.Gson;
 import sun.launcher.resources.launcher;
 
 public class ConfigureVO {
+	/**
+	 * initial cop density
+	 */
 	double initial_cop_density;
+	/**
+	 * initial agent density
+	 */
 	double initial_agent_density;
+	/**
+	 * the vision 
+	 */
 	double vision;
+	/**
+	 * the government legitimacy
+	 */
 	double goverment_legitimacy;
+	/**
+	 * the max jail term
+	 */
 	int max_jail_term;
+	/**
+	 * the tick time that the model will run
+	 */
+	int tick_time;
+	/**
+	 * agents can move or not
+	 */
 	boolean movement ;
 	public double getInitial_cop_density() {
 		return initial_cop_density;
@@ -47,7 +69,14 @@ public class ConfigureVO {
 	public void setMovement(boolean movement) {
 		this.movement = movement;
 	}
+	
 
+	public int getTick_time() {
+		return tick_time;
+	}
+	public void setTick_time(int tick_time) {
+		this.tick_time = tick_time;
+	}
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub

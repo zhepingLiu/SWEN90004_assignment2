@@ -26,6 +26,11 @@ public class PrintUtil {
 		return printer;
 	}
 	
+	/**
+	 * print all patches as a 40 X 40 table in the console
+	 * 
+	 * @param patchs
+	 */
 	public void printBoard(Patch[][][] patchs){
 		int countError = 0;
 		for (int i = 0; i < Const.board_size; i++) {
@@ -44,6 +49,11 @@ public class PrintUtil {
 		System.out.println(countError);
 	}
 
+	/**
+	 * Print current number and state of all agents
+	 * 
+	 * @param agents
+	 */
 	public void printAgents(ArrayList<Agent> agents) {
 		int quietCount = 0;
 		int activeCount = 0;
@@ -71,41 +81,34 @@ public class PrintUtil {
 	}
 	
 
+	/**
+	 * Output the CSV file
+	 * 
+	 * @param datas
+	 * @param fileName
+	 */
 	public void printCSV(ArrayList<ArrayList> datas,String fileName) {
 		//Delimiter used in CSV file
 		final String NEW_LINE_SEPARATOR = "\n";
 		
 		//CSV file header
-		final Object [] FILE_HEADER = {"quiet","active","jailed"};
-
-		
-			
-			
-			
+		final Object [] FILE_HEADER = {"quiet","active","jailed"};	
 			FileWriter fileWriter = null;
-			
 			CSVPrinter csvFilePrinter = null;
 			
 			//Create the CSVFormat object with "\n" as a record delimiter
 	        CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
-					
 			try {
-				
 				//initialize FileWriter object
 				fileWriter = new FileWriter(fileName);
-				
 				//initialize CSVPrinter object 
 		        csvFilePrinter = new CSVPrinter(fileWriter, csvFileFormat);
-		        
 		        //Create CSV file header
 		        csvFilePrinter.printRecord(FILE_HEADER);
-				
 				//Write a new student object list to the CSV file
 				for (ArrayList list : datas) {
-					
 		            csvFilePrinter.printRecord(list);
 				}
-
 				System.out.println("CSV file was created successfully !!!");
 				
 			} catch (Exception e) {
