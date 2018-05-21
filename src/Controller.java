@@ -5,6 +5,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class Controller {
@@ -87,6 +88,8 @@ public class Controller {
         //TODO: Step 1 : move cops and agents not in jail
         while (tick < 1000) {
 
+            Collections.shuffle(cops);
+
             for (Cop c : cops) {
                 //reset moved back to false at the beginning of every tick
                 c.setMoved(false);
@@ -104,6 +107,7 @@ public class Controller {
             }
 
             if (MOVEMENT) {
+                Collections.shuffle(agents);
                 for (Agent a : agents) {
                     //reset moved back to false at the beginning of every tick
                     a.setMoved(false);
@@ -126,6 +130,7 @@ public class Controller {
             }
 
             //TODO: Step 2 : determine behaviour of all agents
+            Collections.shuffle(agents);
             for (Agent a : agents) {
                 if (!a.isJailed()) {
                     int copsCount = 0;
@@ -154,6 +159,7 @@ public class Controller {
             }
 
             //TODO: Step 3 : all cops enforce
+            Collections.shuffle(cops);
             for (Cop c : cops) {
                 ArrayList<Character> activeAgentsInNeighbour =
                         new ArrayList<>();
@@ -224,12 +230,6 @@ public class Controller {
             }
 
             tick++;
-//            System.out.println("This is tick : " + tick);
-//            board.printBoard();
-//            System.out.println("Jailed Count : " + jailedCount);
-//            System.out.println("Active Count : " + activeCount);
-//            System.out.println("Quiet Count : " + quietCount);
-//            Thread.sleep(1000);
 
             ArrayList<Integer> dataNumber = new ArrayList<>();
 
