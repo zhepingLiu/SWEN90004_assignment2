@@ -1,4 +1,6 @@
 \documentclass[11pt]{article}
+\usepackage{indentfirst}
+\usepackage{amsmath}
 
 \title{SWEN90004 Modelling Complex Software System\\
         \textbf{Assignment 2 Report}}
@@ -8,5 +10,48 @@
 
 \begin{document}
     \maketitle
-    \section{title}
+    \section{Background}
+        The chosen model for our analysis is the \textbf{Rebellion} model. 
+        This model is based on model of civil violence by Joshua Epstein (2002).
+        The aim of this project is to replicate this model and study how this 
+        complex system behaves in different stages and under different settings.
+        It describes the how agents behave against central authority in relation
+        to their grievance and the power of authority. 
+        
+    \section{Model}
+        The model includes the following major components:
+        \subsection{Board}
+        Board is the representation of the world in this model. It is set in default
+        to contain $1600\:(40 \times 40)$ patches in total.
+        \subsubsection{Patches}
+        Each patch in the board has two states, \textit{empty} and \textit{occupied}.
+        \subsection{Agent}
+        Agents are the representation of ordinary individuals in this model. Agents
+        have three states, \textit{active}, \textit{quiet} and \textit{jailed}. 
+        They are default to be \textit{quiet} at the beginning. Agents will be able
+        to move to any empty patches in their vision when \textit{MOVEMENT} value
+        equals to \textit{true} every tick. They will update their state after the
+        movement phase according to the following equation.
+        \begin{equation}
+            \begin{split}
+                grievance\:-\:riskAversion\:\times\:estimatedArrestProbability\:>\:threshold \\
+                \text{Where}\ grievance\:=\:perceivedHardship\:\times\:(1\:-\:governmentLegitimacy)\\
+                \text{and}\ estimatedArrestProbability = 
+                %TODO: Add equation for the estimatedArrestProbability
+            \end{split}
+        \end{equation}  
+        When this equation holds, their state will become \textit{active}, otherwise
+        it will be \textit{quiet}. If active agents are in the vision of cops, there
+        will be possibility for them to become \textit{jailed} by the enforce action
+        of cops. A random jail term between 0 and the maximum jail term allowed will
+        be given to them and they are not able to move or action during that time.
+        However, a patch contains jailed agents are still considered as \textit{empty}
+        when no other agents or cops on it.
+        \subsection{Cop}
+        Cops are the representation of power of authority.
+        
+    \section{Replication}
+    \section{Extension}
+    \section{Results \& Discussion}
+    \section{Conclusion}
 \end{document}
