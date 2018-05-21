@@ -5,7 +5,6 @@ import utils.RandomUtil;
 
 public class Agent extends Patch {
 
-	
 	private double riskAversion;
 	private double perceivedHardship;
 	private double grievance;
@@ -24,9 +23,11 @@ public class Agent extends Patch {
 	 * initial the agent with quiet state
 	 */
 	private void init() {
-		super.setState(Const.AGENT_Quiet);
+		// 
+		super.setState(Const.AGENT_QUIET);
 		riskAversion = RandomUtil.getRandomDouble(Const.MAX_RISK_AVERSION);
-		perceivedHardship = RandomUtil.getRandomDouble(Const.MAX_PERCEIVED_HARDSHIP);
+		perceivedHardship = 
+			RandomUtil.getRandomDouble(Const.MAX_PERCEIVED_HARDSHIP);
 	}
 
 	public void setJailTerm(int jailTerm) {
@@ -58,7 +59,8 @@ public class Agent extends Patch {
 	 */
 	public void reportArrestProbability(int copsCount, int activeCount) {
 		activeCount++;
-		this.estimatedArrestProbability = 1 - Math.exp(-Const.K * (copsCount / activeCount));
+		this.estimatedArrestProbability = 
+			1 - Math.exp(-Const.K * (copsCount / activeCount));
 	}
 	/**
 	 * determine whether the agent will active, same as the code in Netlogo model
@@ -66,10 +68,11 @@ public class Agent extends Patch {
 	public void determineBehaviour(int copsCount, int activeCount) {
 		reportGrievance();
 		reportArrestProbability(copsCount, activeCount);
-		if (this.grievance - riskAversion * estimatedArrestProbability > Const.THRESHOLD) {
+		if (this.grievance - riskAversion * estimatedArrestProbability > 
+								Const.THRESHOLD) {
 			this.setState(Const.AGENT_ACTIVE);
 		} else {
-			this.setState(Const.AGENT_Quiet);
+			this.setState(Const.AGENT_QUIET);
 		}
 
 	}

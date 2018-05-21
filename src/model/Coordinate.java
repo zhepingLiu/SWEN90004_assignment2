@@ -30,6 +30,7 @@ public class Coordinate {
 	@Override
 	public boolean equals(Object obj) {
 		
-		return this.x == ((Coordinate)obj).getX() & this.y == ((Coordinate)obj).getY();
+		return this.x == ((Coordinate)obj).getX() & this.y == 
+						 ((Coordinate)obj).getY();
 	}
 }

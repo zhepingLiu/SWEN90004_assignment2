@@ -1,17 +1,12 @@
 package utils;
 
-import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
-import Controller.Board;
 import model.Agent;
 import model.Empty;
 import model.Patch;
@@ -35,10 +30,12 @@ public class PrintUtil {
 		int countError = 0;
 		for (int i = 0; i < Const.board_size; i++) {
 			for (int j = 0; j < Const.board_size; j++) {
-				if (patchs[1][i][j] instanceof Empty && patchs[0][i][j].isAnyAgentsJailed()) {
+				if (patchs[1][i][j] instanceof Empty && 
+					patchs[0][i][j].isAnyAgentsJailed()) {
 					System.out.print(Const.AGENT_JAILED+" ");
 				}else {
-					if(patchs[1][i][j] instanceof Agent && patchs[1][i][j].getState()== Const.AGENT_JAILED)
+					if(patchs[1][i][j] instanceof Agent && 
+						patchs[1][i][j].getState()== Const.AGENT_JAILED)
 						countError++;
 					System.out.print( patchs[1][i][j].toString()+" ");
 				}
@@ -63,7 +60,7 @@ public class PrintUtil {
 			case Const.AGENT_ACTIVE:
 				activeCount++;
 				break;
-			case Const.AGENT_Quiet:
+			case Const.AGENT_QUIET:
 				quietCount++;
 				break;
 			case Const.AGENT_JAILED:
@@ -92,12 +89,13 @@ public class PrintUtil {
 		final String NEW_LINE_SEPARATOR = "\n";
 		
 		//CSV file header
-		final Object [] FILE_HEADER = {"quiet","active","jailed"};	
+		final Object [] FILE_HEADER = {"quiet", "active", "jailed"};	
 			FileWriter fileWriter = null;
 			CSVPrinter csvFilePrinter = null;
 			
 			//Create the CSVFormat object with "\n" as a record delimiter
-	        CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
+			CSVFormat csvFileFormat = CSVFormat.DEFAULT.
+				withRecordSeparator(NEW_LINE_SEPARATOR);
 			try {
 				//initialize FileWriter object
 				fileWriter = new FileWriter(fileName);
@@ -109,10 +107,9 @@ public class PrintUtil {
 				for (ArrayList list : datas) {
 		            csvFilePrinter.printRecord(list);
 				}
-				System.out.println("CSV file was created successfully !!!");
 				
 			} catch (Exception e) {
-				System.out.println("Error in CsvFileWriter !!!");
+				System.out.println("Error in CsvFileWriter!!!");
 				e.printStackTrace();
 			} finally {
 				try {
@@ -120,7 +117,6 @@ public class PrintUtil {
 					fileWriter.close();
 					csvFilePrinter.close();
 				} catch (IOException e) {
-					System.out.println("Error while flushing/closing fileWriter/csvPrinter !!!");
 	                e.printStackTrace();
 				}
 			}
