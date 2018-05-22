@@ -18,7 +18,7 @@ public class Controller {
 
     public final static boolean MOVEMENT = true;
 
-    public final static double AGENT_DENSITY = 0.7;
+    public final static double AGENT_DENSITY = 0.95;
     public final static double COP_DENSITY = 0.04;
 
     public final static int MAX_JAIL_TERM = 30;
@@ -26,14 +26,14 @@ public class Controller {
     public final static double MAX_RISK_AVERSION = 1.0;
     public final static double MAX_PERCEIVED_HARDSHIP = 1.0;
 
-    public static double GOVERNMENT_LEGITIMACY = 0.62;
+    public static double INITIAL_GOVERNMENT_LEGITIMACY = 0.62;
+    public static double GOVERNMENT_LEGITIMACY = INITIAL_GOVERNMENT_LEGITIMACY;
     public static int VISION = 7;
 
     private static Random randomGenerator = new Random();
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
 
-        //TODO: write csv data
         ArrayList<ArrayList> data = new ArrayList<>();
 
         //create board
@@ -81,49 +81,66 @@ public class Controller {
 
         int tick = 0;
 
-        //print the board at tick 0
-//        System.out.println("This is tick : " + tick);
-//        board.printBoard();
-
         //TODO: Step 1 : move cops and agents not in jail
         while (tick < 1000) {
 
-            Collections.shuffle(cops);
+            if (MOVEMENT) {
+                Collections.shuffle(agents);
+                for (int i=0;i<2;i++) {
+                    for (Agent a : agents) {
+                        ArrayList<Patch> candidates = new ArrayList<>();
+                        //reset moved back to false at the beginning of every tick
+                        a.setMoved(false);
 
-            for (Cop c : cops) {
-                //reset moved back to false at the beginning of every tick
-                c.setMoved(false);
-                int x = c.getPosition().getPositionX();
-                int y = c.getPosition().getPositionY();
+                        if (!a.isJailed() && !a.isMoved()) {
+                            int x = a.getPosition().getPositionX();
+                            int y = a.getPosition().getPositionY();
 
-                for (Patch p : board.retrievePatch(x, y).getNeighbourhood())
-                {
-                    if (!p.isOccupied()) {
-                        c.move(p.getCoordinate());
-                        board.retrievePatch(x, y).occupy(c);
-                        break;
+                            for (Patch p : board.retrievePatch(x, y).
+                                    getNeighbourhood()) {
+                                if (!p.isOccupied()) {
+                                    candidates.add(p);
+                                }
+                            }
+
+                            if (!candidates.isEmpty()) {
+                                int randomIndex = randomGenerator.
+                                        nextInt(candidates.size());
+
+                                a.move(candidates.get(randomIndex).
+                                        getCoordinate());
+                                board.retrievePatch(x, y).occupy(a);
+                            }
+                        }
                     }
                 }
             }
 
-            if (MOVEMENT) {
-                Collections.shuffle(agents);
-                for (Agent a : agents) {
-                    //reset moved back to false at the beginning of every tick
-                    a.setMoved(false);
-                    if (!a.isJailed()) {
+            Collections.shuffle(cops);
+            for (Cop c : cops) {
+                ArrayList<Patch> candidates = new ArrayList<>();
+                //reset moved back to false at the beginning of every tick
+                c.setMoved(false);
+                for (int i=0;i<2;i++) {
 
-                        int x = a.getPosition().getPositionX();
-                        int y = a.getPosition().getPositionY();
+                    if (!c.isMoved()) {
+                        int x = c.getPosition().getPositionX();
+                        int y = c.getPosition().getPositionY();
 
                         for (Patch p : board.retrievePatch(x, y).
-                                getNeighbourhood())
+                                                getNeighbourhood())
                         {
                             if (!p.isOccupied()) {
-                                a.move(p.getCoordinate());
-                                board.retrievePatch(x, y).occupy(a);
-                                break;
+                                candidates.add(p);
                             }
+                        }
+
+                        if (!candidates.isEmpty()) {
+                            int randomIndex =
+                                    randomGenerator.nextInt(candidates.size());
+
+                            c.move(candidates.get(randomIndex).getCoordinate());
+                            board.retrievePatch(x, y).occupy(c);
                         }
                     }
                 }
@@ -184,8 +201,7 @@ public class Controller {
                     Agent target = (Agent) activeAgentsInNeighbour.
                             get(randomInt);
 
-                    target.setJailTerm(randomGenerator.
-                            nextInt(MAX_JAIL_TERM));
+                    target.setJailTerm(randomGenerator.nextInt(MAX_JAIL_TERM));
                     target.setJailed(true);
                     target.deActive();
 
@@ -229,6 +245,8 @@ public class Controller {
                 }
             }
 
+            //updateGovernmentLegitimacy(jailedCount, numberOfAgents);
+
             tick++;
 
             ArrayList<Integer> dataNumber = new ArrayList<>();
@@ -239,8 +257,22 @@ public class Controller {
             dataNumber.add(jailedCount);
             data.add(dataNumber);
         }
-
         printCSV(data, "rebellion.csv");
+    }
+
+    /**
+     * Extension: Government legitimacy will increase proportionally as the
+     * number of jailed agents increase
+     * @param jailedCount number of jailed agents
+     * @param numberOfAgents total number of agents
+     */
+    public static void updateGovernmentLegitimacy(int jailedCount,
+                                                  int numberOfAgents)
+    {
+        //TODO: Update the government_legitimacy here
+        double jailedRatio = (double) jailedCount / numberOfAgents;
+        GOVERNMENT_LEGITIMACY = INITIAL_GOVERNMENT_LEGITIMACY +
+                jailedRatio * (1 - INITIAL_GOVERNMENT_LEGITIMACY);
     }
 
     public static void printCSV(ArrayList<ArrayList> datas, String fileName) {
@@ -255,7 +287,8 @@ public class Controller {
         CSVPrinter csvFilePrinter = null;
 
         //Create the CSVFormat object with "\n" as a record delimiter
-        CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
+        CSVFormat csvFileFormat =
+                CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
 
         try {
             //initialize FileWriter object
@@ -269,7 +302,6 @@ public class Controller {
 
             //Write a new student object list to the CSV file
             for (ArrayList list : datas) {
-
                 csvFilePrinter.printRecord(list);
             }
 
@@ -284,7 +316,8 @@ public class Controller {
                 fileWriter.close();
                 csvFilePrinter.close();
             } catch (IOException e) {
-                System.out.println("Error while flushing/closing fileWriter/csvPrinter !!!");
+                System.out.println("Error while flushing/closing " +
+                        "           fileWriter/csvPrinter !!!");
                 e.printStackTrace();
             }
         }

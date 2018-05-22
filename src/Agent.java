@@ -89,6 +89,8 @@ public class Agent implements Character {
     public void reportGrievance() {
         this.grievance = this.perceivedHardship *
                 (1 - Controller.GOVERNMENT_LEGITIMACY);
+        //TODO: Extend the model so that government legitimacy increases
+        //TODO: as number of jailed agents increases
     }
 
     public void reportArrestProbability(int copsCount, int activeCount) {
