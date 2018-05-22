@@ -53,8 +53,7 @@
             \begin{split}
                 grievance\:-\:riskAversion\:\times\:estimatedArrestProbability\:>\:threshold \\
                 \text{Where}\ grievance\:=\:perceivedHardship\:\times\:(1\:-\:governmentLegitimacy)\\
-                \text{and}\ estimatedArrestProbability = 
-                %TODO: Add equation for the estimatedArrestProbability
+                \text{and}\ estimatedArrestProbability = 1 - e^{-k \times ((1 + activeCount) / copsCount)}
             \end{split}
         \end{equation}  
         When this equation holds, their state will become \textit{active}, otherwise
@@ -70,8 +69,19 @@
         Cops are the representation of power of authority in this model. Cops
         are always allowed to move to empty patches within their vision at 
         every tick. They can enforce at most one active agent within their vision
-        each tick and move to their patches.
-        
+        at each tick and move to their patches.
+
+    \section{Extension}
+        The extension we have implemented is that the government legitimacy will
+        increase as the proportion of jailed agents to number of total agents increases.
+        The equation we derive is 
+        \begin{flalign}
+          \begin{split}
+          GovernmentLegitimacy = \\
+          InitialGovernmentLegitimacy + \frac{JailedAgents}{TotalAgents}
+          \times (1 - InitialGovernmentLegitimacy)
+          \end{split}
+        \end{flalign}
     \section{Replication}
     \begin{table}[h]
         \begin{center}

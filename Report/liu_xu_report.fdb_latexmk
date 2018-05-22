@@ -1,6 +1,6 @@
 # Fdb version 3
-["pdflatex"] 1526964218 "/Users/zheping/Documents/MyPrograming/Modelling Complex Systems Engineering/Project2_zhepingl_zewenx/Report/liu_xu_report.tex" "liu_xu_report.pdf" "liu_xu_report" 1526964218
-  "/Users/zheping/Documents/MyPrograming/Modelling Complex Systems Engineering/Project2_zhepingl_zewenx/Report/liu_xu_report.tex" 1526964217 5049 b4cfa44c329551320fc37ce08f510ae9 ""
+["pdflatex"] 1526966351 "/Users/zheping/Documents/MyPrograming/Modelling Complex Systems Engineering/Project2_zhepingl_zewenx/Report/liu_xu_report.tex" "liu_xu_report.pdf" "liu_xu_report" 1526966352
+  "/Users/zheping/Documents/MyPrograming/Modelling Complex Systems Engineering/Project2_zhepingl_zewenx/Report/liu_xu_report.tex" 1526966351 5503 29e51bc3e1b965a800e431539d415b04 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/map/fontname/texfonts.map" 1480098670 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1480098698 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1480098698 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -23,10 +23,13 @@
   "/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb" 1480098733 34811 78b52f49e893bcba91bd7581cdc144c0 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1480098733 32080 340ef9bf63678554ee606688e7b5339d ""
   "/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1480098733 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
+  "/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb" 1480098733 35469 70d41d2b9ea31d5d813066df7c99281c ""
   "/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1480098733 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1480098733 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1480098733 32362 179c33bbf43f19adbb3825bb4e36e57a ""
+  "/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1480098733 32726 0a1aea6fcd6468ee2cf64d891f5c43c8 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1480098733 32569 5e5ddc8df908dea60932f3c484a54c0d ""
+  "/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1480098733 32626 4f5c1b83753b1dd3a97d1b399a005b4b ""
   "/usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1480098733 37944 359e864bd06cde3b1cf57bb20757fb06 ""
   "/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsbsy.sty" 1480098820 2210 5c54ab129b848a5071554186d0168766 ""
   "/usr/local/texlive/2017/texmf-dist/tex/latex/amsmath/amsgen.sty" 1480098820 4160 c115536cf8d4ff25aa8c1c9bc4ecb79a ""
@@ -40,8 +43,8 @@
   "/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1508577553 2413399 a34414952447e5770f00490a7226a53e ""
   "/usr/local/texlive/2017/texmf-var/web2c/pdftex/pdflatex.fmt" 1508577576 4130345 4c8343cd34ffb63c61ef05abd770a6e3 ""
   "/usr/local/texlive/2017/texmf.cnf" 1495593465 577 2b71d4d888f9e5560b2e99985915a9fa ""
-  "liu_xu_report.aux" 1526964218 902 d708621110feb7d6a65430152d8871ea ""
-  "liu_xu_report.tex" 1526964217 5049 b4cfa44c329551320fc37ce08f510ae9 ""
+  "liu_xu_report.aux" 1526966352 973 703ce174c15b23e241e5d142ec606bc1 ""
+  "liu_xu_report.tex" 1526966351 5503 29e51bc3e1b965a800e431539d415b04 ""
   (generated)
   "liu_xu_report.aux"
   "liu_xu_report.pdf"
