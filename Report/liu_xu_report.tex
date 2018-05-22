@@ -16,7 +16,24 @@
         The aim of this project is to replicate this model and study how this 
         complex system behaves in different stages and under different settings.
         It describes the how agents behave against central authority in relation
-        to their grievance and the power of authority. 
+        to their grievance and the power of authority.
+        \paragraph{}
+        \textbf{Rebellion} is a complex system. Firstly, this model is made
+        of many individual instances, each of them has individual state, but at
+        the same time, their behaviour (i.e. state transitions) are affected by
+        other states of other instances near them. Secondly, the states of the 
+        whole system is unpredictable at a certain time t with a given set of inputs.
+        This is due to the interrelation and interactions between states of 
+        different instances and certain degree of randomness in this model. 
+        Thirdly, under most settings, the model is decentralised. The vision of
+        most instances cannot cover the whole board. Also, all agents are the same, 
+        and all cops are the same, none of them is a leader in this model. This
+        implies they all contribute the same amount to influence the states of the
+        model. Fourthly, there is feedback on the behaviour of agents. Active agents
+        can eventually influence agents around them and lead to more active agents.
+        Also, more active agents will attract more cops to enforce on them, which
+        leads to more quiet agents. Finally, although there exists regular patterns 
+        for states of the system, but it does not approach to an equilibrium. 
         
     \section{Model}
         The model includes the following major components:
@@ -41,16 +58,22 @@
             \end{split}
         \end{equation}  
         When this equation holds, their state will become \textit{active}, otherwise
-        it will be \textit{quiet}. If active agents are in the vision of cops, there
+        it will be \textit{quiet}. Both the number of active agents and number of
+        cops around them will be factors that decide their behaviours.
+        If active agents are in the vision of cops, there
         will be possibility for them to become \textit{jailed} by the enforce action
         of cops. A random jail term between 0 and the maximum jail term allowed will
         be given to them and they are not able to move or action during that time.
         However, a patch contains jailed agents are still considered as \textit{empty}
         when no other agents or cops on it.
         \subsection{Cop}
-        Cops are the representation of power of authority.
+        Cops are the representation of power of authority in this model. Cops
+        are always allowed to move to empty patches within their vision at 
+        every tick. They can enforce at most one active agent within their vision
+        each tick and move to their patches.
         
     \section{Replication}
+        
     \section{Extension}
     \section{Results \& Discussion}
     \section{Conclusion}
