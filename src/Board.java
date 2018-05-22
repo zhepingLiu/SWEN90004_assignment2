@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,6 +31,10 @@ public class Board {
         for (Patch p : patches.values()) {
             p.setNeighbourhood(getNeighbourhood(p));
         }
+    }
+
+    public HashMap<Coordinate, Patch> getPatches() {
+        return patches;
     }
 
     public Patch retrievePatch(int x, int y) {
@@ -91,22 +96,20 @@ public class Board {
                     } else {
                         System.out.print("J ");
                     }
-                }
-                else if (patches.get(keys[i][j]).getCharacter() instanceof Cop)
-                {
-                    System.out.print("C ");
-                }
-                else if (patches.get(keys[i][j]).getCharacter()
-                        instanceof Agent) {
-                    if (((Agent) patches.get(keys[i][j]).
-                            getCharacter()).isActive()) {
-                        System.out.print("A ");
-                    } else {
-                        System.out.print("Q ");
+                } else {
+                    for (Character c : patches.get(keys[i][j]).getCharacter()) {
+                        if (c instanceof Cop) {
+                            System.out.print("C ");
+                        } else if (c instanceof Agent) {
+                            if (((Agent) c).isActive()) {
+                                System.out.print("A ");
+                            } else {
+                                System.out.print("Q ");
+                            }
+                        }
                     }
                 }
             }
-
             System.out.print("\n");
         }
 

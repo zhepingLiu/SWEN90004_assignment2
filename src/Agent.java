@@ -26,12 +26,10 @@ public class Agent implements Character {
         this.position = position;
         //this.position.occupy(this);
         this.heading = INITIAL_HEADING;
-        this.riskAversion =
-                randomGenerator.nextDouble() *
-                        Controller.MAX_RISK_AVERSION;
-        this.perceivedHardship =
-                randomGenerator.nextDouble() *
-                        Controller.MAX_PERCEIVED_HARDSHIP;
+        this.riskAversion = Controller.MAX_RISK_AVERSION -
+                                    randomGenerator.nextDouble();
+        this.perceivedHardship = Controller.MAX_PERCEIVED_HARDSHIP -
+                                    randomGenerator.nextDouble();
         this.active = false;
         this.jailTerm = INITIAL_JAIL_TERM;
         this.moved = false;
@@ -89,8 +87,6 @@ public class Agent implements Character {
     public void reportGrievance() {
         this.grievance = this.perceivedHardship *
                 (1 - Controller.GOVERNMENT_LEGITIMACY);
-        //TODO: Extend the model so that government legitimacy increases
-        //TODO: as number of jailed agents increases
     }
 
     public void reportArrestProbability(int copsCount, int activeCount) {

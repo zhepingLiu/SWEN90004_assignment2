@@ -1,22 +1,21 @@
 import java.util.Set;
+import java.util.ArrayList;
 
 public class Patch {
 
     private static final int EMPTY_JAIL = 0;
 
     private Coordinate coordinate;
-    private boolean occupied;
     private int jailNumber;
     private Set<Patch> neighbourhood;
-    private Character character;
+    private ArrayList<Character> characters;
 
 
     public Patch(Coordinate coordinate) {
         this.coordinate = coordinate;
-        this.occupied = false;
         this.jailNumber = EMPTY_JAIL;
         neighbourhood = null;
-        character = null;
+        characters = new ArrayList<>();
     }
 
     public Coordinate getCoordinate() {
@@ -24,7 +23,7 @@ public class Patch {
     }
 
     public boolean isOccupied() {
-        return occupied;
+        return !characters.isEmpty();
     }
 
     public boolean isJailed() {
@@ -43,8 +42,8 @@ public class Patch {
         this.jailNumber--;
     }
 
-    public Character getCharacter() {
-        return character;
+    public ArrayList<Character> getCharacter() {
+        return characters;
     }
 
     public void setNeighbourhood(Set<Patch> neighbourhood) {
@@ -56,12 +55,10 @@ public class Patch {
     }
 
     public void occupy(Character character) {
-        this.occupied = true;
-        this.character = character;
+        this.characters.add(character);
     }
 
-    public void empty() {
-        this.occupied = false;
-        this.character = null;
+    public void empty(Character character) {
+        this.characters.remove(character);
     }
 }

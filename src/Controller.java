@@ -4,8 +4,9 @@ import java.io.IOException;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 public class Controller {
@@ -30,195 +31,38 @@ public class Controller {
     public static double GOVERNMENT_LEGITIMACY = INITIAL_GOVERNMENT_LEGITIMACY;
     public static int VISION = 7;
 
+    public final static int MAX_TICK = 2000;
+
     private static Random randomGenerator = new Random();
+
+    //Controller variables
+    private static Board board;
+    private static ArrayList<Cop> cops;
+    private static ArrayList<Agent> agents;
+    private static ArrayList<Character> chars;
 
     public static void main(String[] args) {
 
+        // an ArrayList contains activeCount, quietCount,
+        // jailedCount at each tick
         ArrayList<ArrayList> data = new ArrayList<>();
 
-        //create board
-        Board board = new Board();
-
-        ArrayList<Cop> cops = new ArrayList<>();
-        ArrayList<Agent> agents = new ArrayList<>();
-
-        //create cops
-        int numberOfCops = (int)(COP_DENSITY * MAP_LENGTH_X * MAP_HEIGHT_Y);
-        System.out.println(numberOfCops);
-
-        for (int i=0;i<numberOfCops;i++) {
-
-            int x = randomGenerator.nextInt(MAP_LENGTH_X);
-            int y = randomGenerator.nextInt(MAP_HEIGHT_Y);
-
-            while (board.retrievePatch(x, y).isOccupied()) {
-                 x = randomGenerator.nextInt(MAP_LENGTH_X);
-                 y = randomGenerator.nextInt(MAP_HEIGHT_Y);
-            }
-
-            Cop cop = new Cop(i, new Coordinate(x, y));
-            cops.add(cop);
-            board.retrievePatch(x, y).occupy(cop);
-        }
-
-        //create agents
-        int numberOfAgents = (int)(AGENT_DENSITY * MAP_LENGTH_X * MAP_HEIGHT_Y);
-        System.out.println(numberOfAgents);
-
-        for (int i=0;i<numberOfAgents;i++) {
-            int x = randomGenerator.nextInt(MAP_LENGTH_X);
-            int y = randomGenerator.nextInt(MAP_HEIGHT_Y);
-
-            while (board.retrievePatch(x, y).isOccupied()) {
-                x = randomGenerator.nextInt(MAP_LENGTH_X);
-                y = randomGenerator.nextInt(MAP_HEIGHT_Y);
-            }
-
-            Agent agent = new Agent(i, new Coordinate(x, y));
-            agents.add(agent);
-            board.retrievePatch(x, y).occupy(agent);
-        }
+        init();
 
         int tick = 0;
 
-        //TODO: Step 1 : move cops and agents not in jail
-        while (tick < 1000) {
+        while (tick < MAX_TICK) {
 
-            if (MOVEMENT) {
-                Collections.shuffle(agents);
-                for (int i=0;i<2;i++) {
-                    for (Agent a : agents) {
-                        ArrayList<Patch> candidates = new ArrayList<>();
-                        //reset moved back to false at the beginning of
-                        // every tick
-                        a.setMoved(false);
+            // Step 1 : move cops and agents not in jail
+            move();
 
-                        if (!a.isJailed() && !a.isMoved()) {
-                            int x = a.getPosition().getPositionX();
-                            int y = a.getPosition().getPositionY();
+            // Step 2 : determine behaviour of all agents
+            determineBehaviour();
 
-                            for (Patch p : board.retrievePatch(x, y).
-                                    getNeighbourhood()) {
-                                if (!p.isOccupied()) {
-                                    candidates.add(p);
-                                }
-                            }
+            // Step 3 : all cops enforce
+            enforce();
 
-                            if (!candidates.isEmpty()) {
-                                int randomIndex = randomGenerator.
-                                        nextInt(candidates.size());
-
-                                a.move(candidates.get(randomIndex).
-                                        getCoordinate());
-                                board.retrievePatch(x, y).occupy(a);
-                            }
-                        }
-                    }
-                }
-            }
-
-            Collections.shuffle(cops);
-            for (Cop c : cops) {
-                ArrayList<Patch> candidates = new ArrayList<>();
-                //reset moved back to false at the beginning of every tick
-                c.setMoved(false);
-                for (int i=0;i<2;i++) {
-
-                    if (!c.isMoved()) {
-                        int x = c.getPosition().getPositionX();
-                        int y = c.getPosition().getPositionY();
-
-                        for (Patch p : board.retrievePatch(x, y).
-                                                getNeighbourhood())
-                        {
-                            if (!p.isOccupied()) {
-                                candidates.add(p);
-                            }
-                        }
-
-                        if (!candidates.isEmpty()) {
-                            int randomIndex =
-                                    randomGenerator.nextInt(candidates.size());
-
-                            c.move(candidates.get(randomIndex).getCoordinate());
-                            board.retrievePatch(x, y).occupy(c);
-                        }
-                    }
-                }
-            }
-
-            //TODO: Step 2 : determine behaviour of all agents
-            Collections.shuffle(agents);
-            for (Agent a : agents) {
-                if (!a.isJailed()) {
-                    int copsCount = 0;
-                    int activeCountNeighbour = 0;
-
-                    int x = a.getPosition().getPositionX();
-                    int y = a.getPosition().getPositionY();
-
-                    for (Patch p : board.retrievePatch(x, y).
-                            getNeighbourhood())
-                    {
-                        if (p.isOccupied()) {
-                            //count number of cops and active agents
-                            if (p.getCharacter() instanceof Cop)
-                            {
-                                copsCount++;
-                            } else if (p.getCharacter() instanceof Agent &&
-                                    ((Agent) p.getCharacter()).isActive())
-                            {
-                                activeCountNeighbour++;
-                            }
-                        }
-                    }
-                    a.determineBehaviour(copsCount, activeCountNeighbour);
-                }
-            }
-
-            //TODO: Step 3 : all cops enforce
-            Collections.shuffle(cops);
-            for (Cop c : cops) {
-                ArrayList<Character> activeAgentsInNeighbour =
-                        new ArrayList<>();
-
-                int x = c.getPosition().getPositionX();
-                int y = c.getPosition().getPositionY();
-
-                for (Patch p : board.retrievePatch(x, y).getNeighbourhood())
-                {
-                    if (p.isOccupied() &&
-                            p.getCharacter() instanceof Agent &&
-                            ((Agent) p.getCharacter()).isActive())
-                    {
-                        activeAgentsInNeighbour.add(p.getCharacter());
-                    }
-                }
-
-                if (!activeAgentsInNeighbour.isEmpty()) {
-                    int randomInt = randomGenerator.nextInt
-                            (activeAgentsInNeighbour.size());
-
-                    Agent target = (Agent) activeAgentsInNeighbour.
-                            get(randomInt);
-
-                    target.setJailTerm(randomGenerator.nextInt(MAX_JAIL_TERM));
-                    target.setJailed(true);
-                    target.deActive();
-
-                    int targetX = target.getPosition().getPositionX();
-                    int targetY = target.getPosition().getPositionY();
-
-                    //empty the patch
-                    board.retrievePatch(targetX, targetY).empty();
-                    board.retrievePatch(targetX, targetY).increaseJailNumber();
-
-                    //move to the jailed agent
-                    c.move(target.getPosition());
-                }
-            }
-
-            //TODO: Step 4 : update jail terms of all jailed agents
+            // Step 4 : update jail terms of all jailed agents
             for (Agent a : agents) {
                 if (a.isJailed() && a.getJailTerm() > 0) {
                     a.decreaseJailTerm();
@@ -226,7 +70,10 @@ public class Controller {
 
                 if (a.isJailed() && a.getJailTerm() == 0) {
                     a.setJailed(false);
-                    a.getPosition();
+                    a.move(a.getPosition());
+                    board.retrievePatch(a.getPosition().getPositionX(),
+                            a.getPosition().getPositionY()).
+                            decreaseJailNumber();
                 }
             }
 
@@ -246,19 +93,286 @@ public class Controller {
                 }
             }
 
+            // Extension of the model
             //updateGovernmentLegitimacy(jailedCount, numberOfAgents);
 
             tick++;
 
-            ArrayList<Integer> dataNumber = new ArrayList<>();
+            ArrayList<Integer> dataLine = new ArrayList<>();
 
-            dataNumber.add(tick);
-            dataNumber.add(quietCount);
-            dataNumber.add(activeCount);
-            dataNumber.add(jailedCount);
-            data.add(dataNumber);
+            dataLine.add(tick);
+            dataLine.add(quietCount);
+            dataLine.add(activeCount);
+            dataLine.add(jailedCount);
+
+            data.add(dataLine);
         }
         printCSV(data, "rebellion.csv");
+    }
+
+    //TODO: change the logic of assigning characters to the version using
+    //TODO: Empty Queue
+    private static void init() {
+        // create board
+        board = new Board();
+        cops = new ArrayList<>();
+        agents = new ArrayList<>();
+        chars = new ArrayList<>();
+
+        ArrayList<Patch> emptyPatches = new ArrayList<>();
+        emptyPatches.addAll(board.getPatches().values());
+
+        // create cops
+        int numberOfCops = (int)(COP_DENSITY * MAP_LENGTH_X * MAP_HEIGHT_Y);
+
+        for (int i=0;i<numberOfCops;i++) {
+
+            int randomIndex = randomGenerator.nextInt(emptyPatches.size());
+            Patch targetPatch = emptyPatches.get(randomIndex);
+            emptyPatches.remove(targetPatch);
+
+            Cop cop = new Cop(i, targetPatch.getCoordinate());
+            cops.add(cop);
+            board.retrievePatch(targetPatch.getCoordinate().getPositionX(),
+                    targetPatch.getCoordinate().getPositionY()).occupy(cop);
+        }
+
+        // create agents
+        int numberOfAgents = (int)(AGENT_DENSITY * MAP_LENGTH_X * MAP_HEIGHT_Y);
+
+        for (int i=0;i<numberOfAgents;i++) {
+
+            int randomIndex = randomGenerator.nextInt(emptyPatches.size());
+            Patch targetPatch = emptyPatches.get(randomIndex);
+            emptyPatches.remove(targetPatch);
+
+            Agent agent = new Agent(i, targetPatch.getCoordinate());
+            agents.add(agent);
+            board.retrievePatch(targetPatch.getCoordinate().getPositionX(),
+                    targetPatch.getCoordinate().getPositionY()).occupy(agent);
+        }
+
+        // add all cops and agents into chars
+        chars.addAll(cops);
+        chars.addAll(agents);
+    }
+
+    private static void move() {
+
+        LinkedList<Patch> emptyPatches = new LinkedList<>();
+
+        for (Patch p : board.getPatches().values()) {
+            if (!p.isOccupied()) {
+                emptyPatches.add(p);
+            }
+        }
+
+        for (Character c : chars) {
+            c.setMoved(false);
+        }
+
+        // when both agents and cops can move
+        if (MOVEMENT) {
+//            while (!emptyPatches.isEmpty()) {
+//                Patch p = emptyPatches.poll();
+//                for (Patch neighbour : p.getNeighbourhood()) {
+//                    ArrayList<Character> candidates = new ArrayList<>();
+//                    for (Character c : neighbour.getCharacter()) {
+//                        if (!c.isMoved()) {
+//                            candidates.add(c);
+//                        }
+//                    }
+//
+//                    if (!candidates.isEmpty()) {
+//                        int randomInt =
+//                                randomGenerator.nextInt(candidates.size());
+//
+//                        Character target = candidates.get(randomInt);
+//
+//                        Patch previous = board.retrievePatch(
+//                                target.getPosition().getPositionX(),
+//                                target.getPosition().getPositionY());
+//
+//                        previous.empty(target);
+//                        target.move(p.getCoordinate());
+//                        p.occupy(target);
+//
+//                        emptyPatches.add(previous);
+//                    }
+//                }
+//            }
+            // randomly shuffle the chars
+            Collections.shuffle(chars);
+            for (Character c : chars) {
+                ArrayList<Patch> candidates = new ArrayList<>();
+                //reset moved back to false at the beginning of
+                // every tick
+                c.setMoved(false);
+
+                // break the iteration if c is a jailed agent
+                if (c instanceof Agent && ((Agent) c).isJailed()) {
+                    break;
+                }
+
+                int x = c.getPosition().getPositionX();
+                int y = c.getPosition().getPositionY();
+
+                for (Patch p : board.retrievePatch(x, y).getNeighbourhood())
+                {
+                    if (!p.isOccupied()) {
+                        candidates.add(p);
+                    }
+                }
+
+                if (!candidates.isEmpty()) {
+                    int randomIndex =
+                            randomGenerator.nextInt(candidates.size());
+
+                    int currentX = c.getPosition().getPositionX();
+                    int currentY = c.getPosition().getPositionY();
+
+                    board.retrievePatch(currentX, currentY).empty(c);
+                    c.move(candidates.get(randomIndex).getCoordinate());
+                    board.retrievePatch(x, y).occupy(c);
+                }
+            }
+        // when only cops can move (i.e. agents cannot move)
+        } else {
+//            while (!emptyPatches.isEmpty()) {
+//                Patch p = emptyPatches.poll();
+//                for (Patch neighbour : p.getNeighbourhood()) {
+//                    ArrayList<Character> candidates = new ArrayList<>();
+//                    for (Character c : neighbour.getCharacter()) {
+//                        if (c instanceof Cop && !c.isMoved()) {
+//                            candidates.add(c);
+//                        }
+//                    }
+//
+//                    if (!candidates.isEmpty()) {
+//                        int randomInt =
+//                                randomGenerator.nextInt(candidates.size());
+//
+//                        Character target = candidates.get(randomInt);
+//
+//                        Patch previous = board.retrievePatch(
+//                                target.getPosition().getPositionX(),
+//                                target.getPosition().getPositionY());
+//
+//                        previous.empty(target);
+//                        target.move(p.getCoordinate());
+//                        p.occupy(target);
+//
+//                        emptyPatches.add(previous);
+//                    }
+//                }
+//            }
+            // randomly shuffle the cops
+            Collections.shuffle(cops);
+            for (Cop c : cops) {
+                ArrayList<Patch> candidates = new ArrayList<>();
+
+                //reset moved back to false at the beginning of every tick
+                c.setMoved(false);
+                if (!c.isMoved()) {
+                    int x = c.getPosition().getPositionX();
+                    int y = c.getPosition().getPositionY();
+
+                    for (Patch p : board.retrievePatch(x, y).getNeighbourhood())
+                    {
+                        if (!p.isOccupied()) {
+                            candidates.add(p);
+                        }
+                    }
+
+                    if (!candidates.isEmpty()) {
+                        int randomIndex =
+                                randomGenerator.nextInt(candidates.size());
+
+                        int currentX = c.getPosition().getPositionX();
+                        int currentY = c.getPosition().getPositionY();
+
+                        board.retrievePatch(currentX, currentY).empty(c);
+                        c.move(candidates.get(randomIndex).getCoordinate());
+                        board.retrievePatch(x, y).occupy(c);
+                    }
+                }
+            }
+        }
+    }
+
+    private static void determineBehaviour() {
+        Collections.shuffle(agents);
+        for (Agent a : agents) {
+            if (!a.isJailed()) {
+                int copsCount = 0;
+                int activeCountNeighbour = 0;
+
+                int x = a.getPosition().getPositionX();
+                int y = a.getPosition().getPositionY();
+
+                for (Patch p : board.retrievePatch(x, y).getNeighbourhood())
+                {
+                    if (p.isOccupied()) {
+                        //count number of cops and active agents
+                        for (Character c : p.getCharacter()) {
+                            if (c instanceof Cop) {
+                                copsCount++;
+                            } else if (c instanceof Agent &&
+                                    ((Agent) c).isActive()) {
+                                activeCountNeighbour++;
+                            }
+                        }
+                    }
+                }
+                a.determineBehaviour(copsCount, activeCountNeighbour);
+            }
+        }
+    }
+
+    private static void enforce() {
+        Collections.shuffle(cops);
+        for (Cop c : cops) {
+            ArrayList<Character> activeAgentsInNeighbour =
+                    new ArrayList<>();
+
+            int x = c.getPosition().getPositionX();
+            int y = c.getPosition().getPositionY();
+
+            for (Patch p : board.retrievePatch(x, y).getNeighbourhood())
+            {
+                if (p.isOccupied()) {
+                    for (Character ch : p.getCharacter()) {
+                        if (ch instanceof Agent && ((Agent) ch).isActive()) {
+                            activeAgentsInNeighbour.add(ch);
+                        }
+                    }
+                }
+            }
+
+            if (!activeAgentsInNeighbour.isEmpty()) {
+                int randomInt = randomGenerator.nextInt
+                        (activeAgentsInNeighbour.size());
+
+                Agent target = (Agent) activeAgentsInNeighbour.
+                        get(randomInt);
+
+                target.setJailTerm(randomGenerator.nextInt(MAX_JAIL_TERM));
+                target.setJailed(true);
+                target.deActive();
+
+                int targetX = target.getPosition().getPositionX();
+                int targetY = target.getPosition().getPositionY();
+
+                //empty the patch
+                board.retrievePatch(targetX, targetY).empty(target);
+                board.retrievePatch(targetX, targetY).increaseJailNumber();
+
+                board.retrievePatch(c.getPosition().getPositionX(),
+                                    c.getPosition().getPositionY()).empty(c);
+                //move to the jailed agent
+                c.move(target.getPosition());
+            }
+        }
     }
 
     /**
@@ -267,7 +381,7 @@ public class Controller {
      * @param jailedCount number of jailed agents
      * @param numberOfAgents total number of agents
      */
-    public static void updateGovernmentLegitimacy(int jailedCount,
+    private static void updateGovernmentLegitimacy(int jailedCount,
                                                   int numberOfAgents)
     {
         // Update the government legitimacy here
@@ -306,10 +420,10 @@ public class Controller {
                 csvFilePrinter.printRecord(list);
             }
 
-            System.out.println("CSV file was created successfully !!!");
+            System.out.println("CSV file was created successfully");
 
         } catch (Exception e) {
-            System.out.println("Error in CsvFileWriter !!!");
+            System.out.println("Error in CsvFileWriter");
             e.printStackTrace();
         } finally {
             try {
@@ -318,7 +432,7 @@ public class Controller {
                 csvFilePrinter.close();
             } catch (IOException e) {
                 System.out.println("Error while flushing/closing " +
-                        "           fileWriter/csvPrinter !!!");
+                        "           fileWriter/csvPrinter");
                 e.printStackTrace();
             }
         }
