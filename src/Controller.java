@@ -89,7 +89,8 @@ public class Controller {
                 for (int i=0;i<2;i++) {
                     for (Agent a : agents) {
                         ArrayList<Patch> candidates = new ArrayList<>();
-                        //reset moved back to false at the beginning of every tick
+                        //reset moved back to false at the beginning of
+                        // every tick
                         a.setMoved(false);
 
                         if (!a.isJailed() && !a.isMoved()) {
@@ -194,7 +195,7 @@ public class Controller {
                     }
                 }
 
-                if (activeAgentsInNeighbour.size() > 0) {
+                if (!activeAgentsInNeighbour.isEmpty()) {
                     int randomInt = randomGenerator.nextInt
                             (activeAgentsInNeighbour.size());
 
@@ -269,7 +270,7 @@ public class Controller {
     public static void updateGovernmentLegitimacy(int jailedCount,
                                                   int numberOfAgents)
     {
-        //TODO: Update the government_legitimacy here
+        // Update the government legitimacy here
         double jailedRatio = (double) jailedCount / numberOfAgents;
         GOVERNMENT_LEGITIMACY = INITIAL_GOVERNMENT_LEGITIMACY +
                 jailedRatio * (1 - INITIAL_GOVERNMENT_LEGITIMACY);
