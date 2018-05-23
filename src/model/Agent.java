@@ -60,8 +60,8 @@ public class Agent extends Patch {
 	public void reportArrestProbability(int copsCount, int activeCount) {
 		activeCount++;
 		this.estimatedArrestProbability = 
-			1 - Math.exp(-Const.K * (copsCount / activeCount));
-	}
+			1.0 - Math.exp(-Const.K * (copsCount / activeCount));
+	}  
 	/**
 	 * determine whether the agent will active, same as the code in Netlogo model
 	 */

@@ -74,12 +74,12 @@ public class Controller {
 			// Move to a random site within your vision
 			move();
 			// Determine if each agent should be active or quiet
-			reduceJailTerm();
+			determineBehaviour();			
 			// Cops arrest a random active agent within their radius
 			enforce();
 			// Jailed agents get their term reduced at the end of each clock
 			// tick
-			determineBehaviour();
+			reduceJailTerm();
 
 			// Display the all patches. It has been commended.
 			// 0 refers to empty, 1 refers to cop
@@ -298,9 +298,6 @@ public class Controller {
 				// to the CopsOrAgents list
 				if ((configure.isMovement() && patch instanceof Agent) || patch instanceof Cop) {
 					CopsOrAgents.add(patch);
-					if (patch.getState() == Const.AGENT_JAILED) {
-						System.out.println("Wrong");
-					}
 				}
 
 			}
@@ -342,7 +339,6 @@ public class Controller {
 					// one to move in.
 					Empty newEmpty = new Empty(patchX, patchY, configure.getVision());
 					patches[patchX][patchY] = newEmpty;
-
 					emptyPatches.add(newEmpty.getCoordinate());
 					break;
 					// If the agent or cop has moved once already, remove it

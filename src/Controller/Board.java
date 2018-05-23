@@ -73,7 +73,7 @@ public class Board {
 				neighbourhood[i][j] = new ArrayList<>();
 				for (int ii = -intVision; ii <= intVision; ii++) {
 					for (int jj = -intVision; jj <= intVision; jj++) {
-						if (Math.abs(ii) + Math.abs(jj) < vision && 
+						if (Math.sqrt(ii*ii +jj*jj) < vision && 
 							i + ii >= 0 && i + ii < Const.board_size && 
 							j + jj >= 0 && j + jj < Const.board_size) {
 							neighbourhood[i][j].

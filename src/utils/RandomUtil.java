@@ -1,16 +1,19 @@
 package utils;
 
+import java.util.Random;
+
 /**
  * @author Zewen Xu
  *
  * Generate random value
  */
 public class RandomUtil {
-	public static int getRandomInt(int range){
-		return (int) (Math.random()*range);
+	static Random random = new Random(System.currentTimeMillis());
+	public static int getRandomInt(int range){	
+		return (int) (random.nextDouble()*range);
 	}
 	
 	public static double getRandomDouble(double range){
-		return Math.random()*range;
+		return random.nextDouble()*range;
 	}
 }
