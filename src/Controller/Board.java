@@ -1,6 +1,7 @@
 package Controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import configure.ConfigureVO;
@@ -15,8 +16,8 @@ import utils.RandomUtil;
 
 public class Board {
 
-	//TODO: add some comments about the three dimensional patch
-	private Patch[][][] patches;
+	//This patch array will store all elements.
+	private Patch[][] patches;
 
 	// the number of cops and agents
 	private int agentNum, copNum;
@@ -30,12 +31,17 @@ public class Board {
 	
 	// All the agents in the board
 	private ArrayList<Agent> agents = new ArrayList<>();
+	
+	// All the cops in the board
+	private ArrayList<Cop> cops = new ArrayList<>();
+	
 
+	private HashMap<String, ArrayList<Agent>> jailedAgents = new HashMap<>();
 	/**
 	 * 
 	 */
 	public Board(ConfigureVO vo) {
-		patches = new Patch[2][Const.board_size][Const.board_size];
+		patches = new Patch[Const.board_size][Const.board_size];
 		agentNum = (int) (Const.board_size * Const.board_size * 
 							vo.getInitialAgentDensity());
 		copNum = (int) (Const.board_size * Const.board_size * 
@@ -45,7 +51,6 @@ public class Board {
 		initPathces();
 
 		initNeighbor();
-		PrintUtil.getInstance().printBoard(patches);
 	}
 	
 
@@ -97,15 +102,14 @@ public class Board {
 	private void initPathces() {
 		for (int i = 0; i < Const.board_size; i++) {
 			for (int j = 0; j < Const.board_size; j++) {
-				patches[0][i][j] = new Empty(i,j,configureVO.getVision());
-				patches[1][i][j] = new Empty(i,j,configureVO.getVision());
+				patches[i][j] = new Empty(i,j,configureVO.getVision());
 			}
 		}
 
 		for (int i = 0; i < agentNum; i++) {
 			int x = RandomUtil.getRandomInt(Const.board_size);
 			int y = RandomUtil.getRandomInt(Const.board_size);
-			while (!(patches[1][x][y] instanceof Empty)) {
+			while (!(patches[x][y] instanceof Empty)) {
 				if (y == Const.board_size -1  && x == Const.board_size -1) {
 					x=0;
 					y=0;
@@ -120,13 +124,13 @@ public class Board {
 			Agent newAgent = new  Agent(x,y,configureVO.getVision(), 
 									configureVO.getGovermentLegitimacy());			
 			agents.add(newAgent);
-			patches[1][x][y] = newAgent;			
+			patches[x][y] = newAgent;			
 		}
 		
 		for (int i = 0; i < copNum; i++) {
 			int x = RandomUtil.getRandomInt(Const.board_size);
 			int y = RandomUtil.getRandomInt(Const.board_size);
-			while (!(patches[1][x][y] instanceof Empty)) {
+			while (!(patches[x][y] instanceof Empty)) {
 				if (y == Const.board_size -1 && x == Const.board_size -1) {
 					x=0;
 					y=0;
@@ -137,16 +141,66 @@ public class Board {
 					y++;
 				}
 			}
-			patches[1][x][y] = new Cop(x,y,configureVO.getVision());
+			Cop cop = new Cop(x,y,configureVO.getVision());
+			cops.add(cop);
+			patches[x][y] = cop;
 			
 		}
 	}
 
-	public Patch[][][] getPatchs() {
+	public Patch[][] getPatchs() {
 		return patches;
+	}
+	public HashMap<String, ArrayList<Agent>> getJailedAgents(){
+		return jailedAgents;
 	}
 	
 	public ArrayList<Agent> getAgents() {
 		return agents;
+	}
+	public ArrayList<Cop> getCops() {
+		return cops;
+	}
+
+
+	public void putAgentInJail(Agent randomAgent) {
+		String key = randomAgent.getCoordinate().getX()+","+randomAgent.getCoordinate().getY();
+		if (jailedAgents.get(key) != null) {
+			jailedAgents.get(key).add(randomAgent);
+		}else {
+			ArrayList<Agent> agents = new ArrayList<>();
+			agents.add(randomAgent);
+			jailedAgents.put(key, agents);
+		}
+		
+	}
+
+
+	public Agent getReleasedAgent(Coordinate temp) {
+		String key =  temp.getX()+","+temp.getY();
+		
+		Agent returnAgent = null;
+		
+		if (jailedAgents.get(key) != null) {
+			for (Agent agent : jailedAgents.get(key)) {
+				if (agent.getJailTerm() == 0) {
+					returnAgent = agent;
+					break;
+				}
+			}
+			if (returnAgent != null) {
+				jailedAgents.get(key).remove(returnAgent);
+			}
+		}
+		return returnAgent;
+	}
+
+
+	public boolean isAnyAgentInJailed(int i ,int j) {
+
+		if (jailedAgents.get(i+","+j) != null && jailedAgents.get(i+","+j).size()>0) {
+			return true;
+		}
+		return false;
 	}
 }

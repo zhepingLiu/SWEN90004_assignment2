@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
+import Controller.Board;
 import model.Agent;
 import model.Empty;
 import model.Patch;
@@ -26,18 +27,18 @@ public class PrintUtil {
 	 * 
 	 * @param patchs
 	 */
-	public void printBoard(Patch[][][] patchs){
+	public void printBoard(Board board){
 		int countError = 0;
+		Patch[][] patchs = board.getPatchs();
 		for (int i = 0; i < Const.board_size; i++) {
 			for (int j = 0; j < Const.board_size; j++) {
-				if (patchs[1][i][j] instanceof Empty && 
-					patchs[0][i][j].isAnyAgentsJailed()) {
+				if (patchs[i][j] instanceof Empty && board.isAnyAgentInJailed(i,j)) {
 					System.out.print(Const.AGENT_JAILED+" ");
 				}else {
-					if(patchs[1][i][j] instanceof Agent && 
-						patchs[1][i][j].getState()== Const.AGENT_JAILED)
+					if(patchs[i][j] instanceof Agent && 
+						patchs[i][j].getState()== Const.AGENT_JAILED)
 						countError++;
-					System.out.print( patchs[1][i][j].toString()+" ");
+					System.out.print( patchs[i][j].toString()+" ");
 				}
 				
 			}

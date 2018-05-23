@@ -5,9 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
 
 import com.google.gson.Gson;
 
@@ -29,9 +29,8 @@ public class Controller {
 	Board board;
 	ConfigureVO configure;
 
-	
 	/**
-	 * Initl the system with configuration in configure.json file. 
+	 * Initl the system with configuration in configure.json file.
 	 */
 	void init() {
 		Gson gson = new Gson();
@@ -61,34 +60,35 @@ public class Controller {
 		controller.go();
 	}
 
-	
 	/**
 	 * Go function, just like go in Netlogo.
 	 */
 	private void go() {
 		int count = 0;
 		ArrayList<ArrayList> datas = new ArrayList<>();
-		
-		// Tick_time in configure.json will control how many ticks the model will run
+
+		// Tick_time in configure.json will control how many ticks the model
+		// will run
 		while (count++ < configure.getTickTime()) {
 
 			// Move to a random site within your vision
 			move();
 			// Determine if each agent should be active or quiet
 			reduceJailTerm();
-			//Cops arrest a random active agent within their radius
+			// Cops arrest a random active agent within their radius
 			enforce();
-			//Jailed agents get their term reduced at the end of each clock tick
+			// Jailed agents get their term reduced at the end of each clock
+			// tick
 			determineBehaviour();
-			
+
 			// Display the all patches. It has been commended.
 			// 0 refers to empty, 1 refers to cop
 			// 2 refers to quiet agent
 			// 3 refers to active agent
 			// 4 refers to jailed agent
-//			System.out.println();
-//			PrintUtil.getInstance().printBoard(board.getPatchs());
-//			System.out.println("****************************");
+			// System.out.println();
+			 PrintUtil.getInstance().printBoard(board);
+			 System.out.println("****************************");
 
 			// Output the data to CSV file
 			datas.add(generateData(count, board.getAgents()));
@@ -134,56 +134,57 @@ public class Controller {
 	 * Reduce jail term of every jailed agent.
 	 */
 	private void reduceJailTerm() {
-		Patch[][][] patches = board.getPatchs();
-		for (int i = 0; i < Const.board_size; i++) {
-			for (int j = 0; j < Const.board_size; j++) {
-				Patch patch = patches[0][i][j];
-				if (patch.isAnyAgentsJailed()) {
-					patch.reduceJailTerm();
+		HashMap<String, ArrayList<Agent>> jailedAgents = board.getJailedAgents();
+		for (ArrayList<Agent> agents : jailedAgents.values()) {
+			if (agents.size() > 0) {
+				for (Agent agent : agents) {
+					agent.reduceJailTerm();
 				}
 			}
 		}
 	}
 
 	/**
-	 * Cops arrest a random active agent within their radius
-	 * and move to the patch of that agent.
+	 * Cops arrest a random active agent within their radius and move to the
+	 * patch of that agent.
 	 */
 	private void enforce() {
-		Patch[][][] patches = board.getPatchs();
+		Patch[][] patches = board.getPatchs();
+		ArrayList<Cop> cops = board.getCops();
 		ArrayList<Patch> activeAgents = new ArrayList<>();
-		for (int i = 0; i < Const.board_size; i++) {
-			for (int j = 0; j < Const.board_size; j++) {
-				if (patches[1][i][j] instanceof Cop) {
-					Cop cop = (Cop) patches[1][i][j];
-					// Cops find all active agents in their vision.
-					for (Coordinate temp : board.getNeighbourhood(i, j)) {
-						if (patches[1][temp.getX()][temp.getY()] instanceof Agent && patches[1][temp.getX()][temp.getY()].getState() == Const.AGENT_ACTIVE) {
-							activeAgents.add(patches[1][temp.getX()][temp.getY()]);
-						}
-					}
-					int activeNum = activeAgents.size();
-					// if there is active agents
-					if (activeNum > 0) {
-						// Arrest a random one
-						Agent randomAgent = (Agent) activeAgents.get(RandomUtil.getRandomInt(activeNum));
-						// Initial Jailterm based on configuration
-						randomAgent.setJailTerm(RandomUtil.getRandomInt(configure.getMaxJailTerm()));
-						// Set the agent as jailed
-						randomAgent.setState(Const.AGENT_JAILED);
-						int agentx = randomAgent.getCoordinate().getX();
-						int agenty = randomAgent.getCoordinate().getY();
-						// Put the agent into jail
-						patches[0][agentx][agenty].putAgentInJail(randomAgent);
-						
-						// Cop will move to the patch of that agent.
-						cop.setCoordinate(agentx, agenty);
-						patches[1][agentx][agenty] = cop;
-						// The original patch of the cop will be empty.
-						patches[1][i][j] = new Empty(i, j, configure.getVision());
-						activeAgents.clear();
-					}
+		
+		Collections.shuffle(cops);
+
+		for (Cop cop : cops) {
+			int xCop = cop.getCoordinate().getX();
+			int yCop = cop.getCoordinate().getY();
+
+			// Cops find all active agents in their vision.
+			for (Coordinate temp : board.getNeighbourhood(xCop, yCop)) {
+				if (patches[temp.getX()][temp.getY()] instanceof Agent
+						&& patches[temp.getX()][temp.getY()].getState() == Const.AGENT_ACTIVE) {
+					activeAgents.add(patches[temp.getX()][temp.getY()]);
 				}
+			}
+			int activeNum = activeAgents.size();
+			// if there is active agents
+			if (activeNum > 0) {
+				// Arrest a random one
+				Agent randomAgent = (Agent) activeAgents.get(RandomUtil.getRandomInt(activeNum));
+				// Initial Jailterm based on configuration
+				randomAgent.setJailTerm(RandomUtil.getRandomInt(configure.getMaxJailTerm()));
+				// Set the agent as jailed
+				randomAgent.setState(Const.AGENT_JAILED);
+				int agentx = randomAgent.getCoordinate().getX();
+				int agenty = randomAgent.getCoordinate().getY();
+				// Put the agent into jail
+				board.putAgentInJail(randomAgent);
+				// Cop will move to the patch of that agent.
+				cop.setCoordinate(agentx, agenty);
+				patches[agentx][agenty] = cop;
+				// The original patch of the cop will be empty.
+				patches[xCop][yCop] = new Empty(xCop, yCop, configure.getVision());
+				activeAgents.clear();
 			}
 		}
 	}
@@ -192,39 +193,46 @@ public class Controller {
 	 * Jailed agents get their term reduced at the end of each clock tick
 	 */
 	private void determineBehaviour() {
-		Patch[][][] patches = board.getPatchs();
+		Patch[][] patches = board.getPatchs();
 		// number for cops around
 		int copNumInNeighbour = 0;
 		// number for active agents around
 		int activeNumInNeighbour = 0;
-		for (int i = 0; i < Const.board_size; i++) {
-			for (int j = 0; j < Const.board_size; j++) {
-				if (patches[1][i][j] instanceof Agent) {
-					for (Coordinate temp : board.getNeighbourhood(i, j)) {
-						if (patches[1][temp.getX()][temp.getY()] instanceof Cop) {
-							copNumInNeighbour++;
-						} else if (patches[1][temp.getX()][temp.getY()] instanceof Agent && patches[1][temp.getX()][temp.getY()].getState() == Const.AGENT_ACTIVE) {
-							activeNumInNeighbour++;
-						}
+		
+		ArrayList<Agent> agents = board.getAgents();
+		// make the determine behaviour randomly.
+		Collections.shuffle(agents);
+		
+		for (Agent agent : agents) {
+			if (agent.getState() != Const.AGENT_JAILED) {
+				int xAgent = agent.getCoordinate().getX();
+				int yAgent = agent.getCoordinate().getY();
+				
+				for (Coordinate temp : board.getNeighbourhood(xAgent, yAgent)) {
+					if (patches[temp.getX()][temp.getY()] instanceof Cop) {
+						copNumInNeighbour++;
+					} else if (patches[temp.getX()][temp.getY()] instanceof Agent
+							&& patches[temp.getX()][temp.getY()].getState() == Const.AGENT_ACTIVE) {
+						activeNumInNeighbour++;
 					}
-					// Agent will determine their behaviour on the number of cops and active agents around.
-					((Agent) patches[1][i][j]).determineBehaviour(copNumInNeighbour, activeNumInNeighbour);
 				}
+				// Agent will determine their behaviour on the number of
+				// cops and active agents around.
+				agent.determineBehaviour(copNumInNeighbour, activeNumInNeighbour);
 			}
 		}
-
 	}
 
 	/**
-	 *  Move to a random site within your vision
+	 * Move to a random site within your vision
 	 */
 	private void move() {
-		Patch[][][] patches = board.getPatchs();
+		Patch[][] patches = board.getPatchs();
 		ArrayList<Coordinate> emptyPatches = new ArrayList<Coordinate>();
 		for (int i = 0; i < Const.board_size; i++) {
 			for (int j = 0; j < Const.board_size; j++) {
-				if (patches[1][i][j] instanceof Empty)
-					//Gather all patches which are empty
+				if (patches[i][j] instanceof Empty)
+					// Gather all patches which are empty
 					emptyPatches.add(new Coordinate(i, j));
 
 			}
@@ -235,27 +243,29 @@ public class Controller {
 	}
 
 	/**
-	 * Set the move state of all agent and cops as false for the next tick time to move.
+	 * Set the move state of all agent and cops as false for the next tick time
+	 * to move.
+	 * 
 	 * @param patches
 	 */
-	private void resetMoveState(Patch[][][] patches) {
+	private void resetMoveState(Patch[][] patches) {
 		for (int i = 0; i < Const.board_size; i++) {
 			for (int j = 0; j < Const.board_size; j++) {
-				patches[1][i][j].setMoved(false);
+				patches[i][j].setMoved(false);
 			}
 		}
 	}
 
 	/**
 	 * Step 1 : Move jailed agent firstly if the agent has just been released.
-	 * Step 2 : Then move a random cop or agent in the vision of the empty patch to the patch.
-	 * Step 3 : Store the new empty patch to the list and repeat from step 1 until there is no
-	 * more empty patch in the list
+	 * Step 2 : Then move a random cop or agent in the vision of the empty patch
+	 * to the patch. Step 3 : Store the new empty patch to the list and repeat
+	 * from step 1 until there is no more empty patch in the list
 	 * 
 	 * @param emptyPatches
 	 * @param patches
 	 */
-	private void moveOneTick(ArrayList<Coordinate> emptyPatches, Patch[][][] patches) {
+	private void moveOneTick(ArrayList<Coordinate> emptyPatches, Patch[][] patches) {
 		int count = 0;
 		ArrayList<Patch> CopsOrAgents = new ArrayList<>();
 		// if the no more empty patch can be used then stop the loop
@@ -264,23 +274,27 @@ public class Controller {
 			Coordinate current = emptyPatches.get(RandomUtil.getRandomInt(emptyPatches.size()));
 			int currentX = current.getX();
 			int currentY = current.getY();
-			Patch agentReleased = null;
+			Agent agentReleased = null;
 			// find all neighbourhood within the patch
 			for (Coordinate temp : board.getNeighbourhood(currentX, currentY)) {
-				Patch patch = patches[1][temp.getX()][temp.getY()];
-				// if agent cannot move and the jailed agent will be released, then the agent need be 
+				Patch patch = patches[temp.getX()][temp.getY()];
+				// if agent cannot move and the jailed agent will be released,
+				// then the agent need be
 				// revealed in the patch
-				if (!configure.isMovement() && patches[1][temp.getX()][temp.getY()] instanceof Empty) {
-					agentReleased = patches[0][temp.getX()][temp.getY()].getReleasedAgent();
-				// Agents can move, just find a jailed agent who will be released.
+				if (!configure.isMovement() && patches[temp.getX()][temp.getY()] instanceof Empty) {
+					agentReleased = board.getReleasedAgent(temp);
+					// Agents can move, just find a jailed agent who will be
+					// released.
 				} else if (configure.isMovement()) {
-					agentReleased = patches[0][temp.getX()][temp.getY()].getReleasedAgent();
+					agentReleased = board.getReleasedAgent(temp);
 				}
-				// If there is a jailed agent will be released, then break the loop
+				// If there is a jailed agent will be released, then break the
+				// loop
 				if (agentReleased != null) {
 					break;
 				}
-				// If there is no such agent can be found then add all agents and cops within the neighbourhood 
+				// If there is no such agent can be found then add all agents
+				// and cops within the neighbourhood
 				// to the CopsOrAgents list
 				if ((configure.isMovement() && patch instanceof Agent) || patch instanceof Cop) {
 					CopsOrAgents.add(patch);
@@ -296,20 +310,22 @@ public class Controller {
 			// move, reveal it in the board
 			if (!configure.isMovement() && agentReleased != null) {
 				((Agent) agentReleased).setState(Const.AGENT_QUIET);
-				patches[1][agentReleased.getCoordinate().getX()][agentReleased.getCoordinate().getY()] = agentReleased;
-				removeEmptyPatchInList(emptyPatches, agentReleased.getCoordinate().getX(), agentReleased.getCoordinate().getY());
+				patches[agentReleased.getCoordinate().getX()][agentReleased.getCoordinate().getY()] = agentReleased;
+				removeEmptyPatchInList(emptyPatches, agentReleased.getCoordinate().getX(),
+						agentReleased.getCoordinate().getY());
 				continue;
 			}
-			// if any agent is just released from the jail and agent can move,
+			// if any agent is just released from the jail and agents can move,
 			// then move it to the empty patch.
 			if (configure.isMovement() && agentReleased != null) {
 				((Agent) agentReleased).setState(Const.AGENT_QUIET);
 				agentReleased.setMoved(true);
 				agentReleased.setCoordinate(currentX, currentY);
-				patches[1][currentX][currentY] = agentReleased;
+				patches[currentX][currentY] = agentReleased;
 				continue;
 			}
-			// Move a random cop or agent in CopsOrAgents list to the empty patch						
+			// Move a random cop or agent in CopsOrAgents list to the empty
+			// patch
 			while (CopsOrAgents.size() > 0) {
 				int randomOne = RandomUtil.getRandomInt(CopsOrAgents.size());
 				Patch patch = CopsOrAgents.get(randomOne);
@@ -319,15 +335,18 @@ public class Controller {
 					int patchY = patch.getCoordinate().getY();
 					patch.setMoved(true);
 					patch.setCoordinate(currentX, currentY);
-					patches[1][currentX][currentY] = patch;
-					// The original patch will be empty after the agent or the cop moved,
-					// add the new empty patch to the list waiting for another one to move in.
+					patches[currentX][currentY] = patch;
+					// The original patch will be empty after the agent or the
+					// cop moved,
+					// add the new empty patch to the list waiting for another
+					// one to move in.
 					Empty newEmpty = new Empty(patchX, patchY, configure.getVision());
-					patches[1][patchX][patchY] = newEmpty;
-					
+					patches[patchX][patchY] = newEmpty;
+
 					emptyPatches.add(newEmpty.getCoordinate());
 					break;
-				// If the agent or cop has moved once already, remove it from the list
+					// If the agent or cop has moved once already, remove it
+					// from the list
 				} else {
 					CopsOrAgents.remove(patch);
 				}
@@ -338,8 +357,8 @@ public class Controller {
 	}
 
 	/**
-	 * If the jailed agent has been released in the board, the no one can move into the patch
-	 * anymore.
+	 * If the jailed agent has been released in the board, the no one can move
+	 * into the patch anymore.
 	 * 
 	 * @param emptyPatches
 	 * @param x
