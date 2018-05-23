@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import com.google.gson.Gson;
+import com.sun.org.apache.xml.internal.security.keys.content.RetrievalMethod;
 
 import configure.ConfigureVO;
 import model.Agent;
@@ -93,10 +94,10 @@ public class Controller {
 			// Output the data to CSV file
 			datas.add(generateData(count, board.getAgents()));
 
-			PrintUtil.getInstance().printAgents(board.getAgents());
-			PrintUtil.getInstance().printCount(board);
+//			PrintUtil.getInstance().printAgents(board.getAgents());
+//			PrintUtil.getInstance().printCount(board);
 		}
-		PrintUtil.getInstance().printCSV(datas, "data.csv");
+		PrintUtil.getInstance().printCSV(datas, "scenario_4.csv");
 	}
 
 	/**
@@ -197,10 +198,18 @@ public class Controller {
 	 */
 	private void determineBehaviour() {
 		Patch[][] patches = board.getPatchs();
+		
 		// number for cops around
 		int copNumInNeighbour = 0;
 		// number for active agents around
 		int activeNumInNeighbour = 0;
+		
+		// the first extension
+		double governmentLegitimacy = configure.getGovermentLegitimacy();
+		if (configure.isExtention1()) {
+			int jailedCount = board.getJailedNum();
+			governmentLegitimacy = getNewGovernmentLegitimacy(jailedCount, board.getAgentNum());
+		}
 		
 		ArrayList<Agent> agents = board.getAgents();
 		// make the determine behaviour randomly.
@@ -221,6 +230,7 @@ public class Controller {
 				}
 				// Agent will determine their behaviour on the number of
 				// cops and active agents around.
+				agent.setGovernmentLegitimacy(governmentLegitimacy);
 				agent.determineBehaviour(copNumInNeighbour, activeNumInNeighbour);
 				copNumInNeighbour = 0;
 				activeNumInNeighbour = 0;
@@ -376,5 +386,20 @@ public class Controller {
 		}
 
 	}
+	
+	/**
+     * The First Extension: Government legitimacy will increase 
+     * proportionally as the number of jailed agents increase
+     * @param jailedCount number of jailed agents
+     * @param numberOfAgents total number of agents
+     */
+    private double getNewGovernmentLegitimacy(int jailedCount,
+                                                  int numberOfAgents){
+        // Update the government legitimacy here
+        double jailedRatio = (double) jailedCount / (double) numberOfAgents;
+        double GOVERNMENT_LEGITIMACY = configure.getGovermentLegitimacy() +
+                jailedRatio * (1 - configure.getGovermentLegitimacy());
+        return GOVERNMENT_LEGITIMACY;
+    }
 
 }

@@ -47,6 +47,10 @@ public class Agent extends Patch {
 		return jailTerm;
 	}
 	
+	public void setGovernmentLegitimacy(double governmentLegitimacy) {
+		this.governmentLegitimacy = governmentLegitimacy;
+	}
+	
 	/**
 	 * report grievance of the agent, same as the code in Netlogo model
 	 */

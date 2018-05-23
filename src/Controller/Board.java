@@ -175,6 +175,13 @@ public class Board {
 		
 	}
 
+	public int getJailedNum() {
+		int count = 0;
+		for(ArrayList<Agent> agents : jailedAgents.values()){
+			count+=agents.size();
+		}
+		return count;
+	}
 
 	public Agent getReleasedAgent(Coordinate temp) {
 		String key =  temp.getX()+","+temp.getY();

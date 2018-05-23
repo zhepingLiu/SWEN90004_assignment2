@@ -19,6 +19,15 @@ public class ConfigureVO {
 	int tickTime;
 	// agents can move or not
 	boolean movement;
+	// switch of the first extension
+	boolean extention1;
+	
+	public boolean isExtention1() {
+		return extention1;
+	}
+	public void setExtention1(boolean extention1) {
+		this.extention1 = extention1;
+	}
 
 	public double getInitialCopDensity() {
 		return initialCopDensity;
