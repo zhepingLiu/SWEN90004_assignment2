@@ -76,5 +76,12 @@ public class Agent extends Patch {
 		}
 
 	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "grievance : "+this.grievance+"\n"+
+				"estimatedArrestProbability : "+this.estimatedArrestProbability+
+				"\nriskAversion : "+this.riskAversion+"\n";
+	}
 
 }

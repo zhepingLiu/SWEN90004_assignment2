@@ -28,12 +28,11 @@ public class PrintUtil {
 	 * 
 	 * @param patchs
 	 */
-	public void printBoard(Board board){
+	public void printBoard(Patch[][] patchs){
 		int countError = 0;
-		Patch[][] patchs = board.getPatchs();
 		for (int i = 0; i < Const.board_size; i++) {
 			for (int j = 0; j < Const.board_size; j++) {
-//				if (patchs[i][j] instanceof Empty && board.isAnyAgentInJailed(i,j)) {
+//				if (patchs[i][j] instanceof Empty ) {
 //					System.out.print(Const.AGENT_JAILED+" ");
 //				}else {
 //					if(patchs[i][j] instanceof Agent && 
@@ -41,11 +40,9 @@ public class PrintUtil {
 //						countError++;
 //					System.out.print( patchs[i][j].toString()+" ");
 //				}
-				if(patchs[i][j] instanceof Agent || patchs[i][j] instanceof Cop){
-					countError++;
-				}
 				
 			}
+//			System.out.println();
 		}
 		System.out.println(countError);
 	}
@@ -78,6 +75,45 @@ public class PrintUtil {
 		System.out.println("Active : "+ activeCount);
 		System.out.println("Jailed : "+ jailedCount);
 		System.out.println("sum:     "+ (quietCount+activeCount+jailedCount));
+		
+	}
+	
+	public void printCount(Board board) {
+		int quietCount = 0;
+		int activeCount = 0;
+		int jailedCount = 0;
+		int copCount = 0;
+		
+		for (int i = 0; i < Const.board_size; i++) {
+			for (int j = 0; j < Const.board_size; j++) {
+				Patch agent = board.getPatchs()[i][j];
+				if (agent instanceof Agent) {
+					switch (agent.getState()) {
+					case Const.AGENT_ACTIVE:
+						activeCount++;
+						break;
+					case Const.AGENT_QUIET:
+						quietCount++;
+						break;
+					case Const.AGENT_JAILED:
+						jailedCount++;
+						break;
+					default:
+						break;
+					}
+				}else if(agent instanceof Cop){
+					copCount++;
+				}
+			}
+		}
+		
+		
+		System.out.println("Quiet :  "+ quietCount);
+		System.out.println("Active : "+ activeCount);
+		System.out.println("Jailed : "+ jailedCount);
+		System.out.println("cop :    "+ copCount);
+		System.out.println("sum:     "+ (quietCount+activeCount+jailedCount));
+		System.out.println();
 		
 	}
 	

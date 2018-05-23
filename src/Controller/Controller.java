@@ -87,11 +87,14 @@ public class Controller {
 			// 3 refers to active agent
 			// 4 refers to jailed agent
 			// System.out.println();
-			 PrintUtil.getInstance().printBoard(board);
-			 System.out.println("****************************");
+//			 PrintUtil.getInstance().printBoard(board);
+//			 System.out.println("****************************");
 
 			// Output the data to CSV file
 			datas.add(generateData(count, board.getAgents()));
+
+			PrintUtil.getInstance().printAgents(board.getAgents());
+			PrintUtil.getInstance().printCount(board);
 		}
 		PrintUtil.getInstance().printCSV(datas, "data.csv");
 	}
@@ -219,6 +222,8 @@ public class Controller {
 				// Agent will determine their behaviour on the number of
 				// cops and active agents around.
 				agent.determineBehaviour(copNumInNeighbour, activeNumInNeighbour);
+				copNumInNeighbour = 0;
+				activeNumInNeighbour = 0;
 			}
 		}
 	}
@@ -234,7 +239,6 @@ public class Controller {
 				if (patches[i][j] instanceof Empty)
 					// Gather all patches which are empty
 					emptyPatches.add(new Coordinate(i, j));
-
 			}
 		}
 		// move once in one tick time
@@ -281,7 +285,7 @@ public class Controller {
 				// if agent cannot move and the jailed agent will be released,
 				// then the agent need be
 				// revealed in the patch
-				if (!configure.isMovement() && patches[temp.getX()][temp.getY()] instanceof Empty) {
+				if (!configure.isMovement() && patch instanceof Empty) {
 					agentReleased = board.getReleasedAgent(temp);
 					// Agents can move, just find a jailed agent who will be
 					// released.
@@ -319,6 +323,7 @@ public class Controller {
 				agentReleased.setMoved(true);
 				agentReleased.setCoordinate(currentX, currentY);
 				patches[currentX][currentY] = agentReleased;
+				emptyPatches.remove(current);
 				continue;
 			}
 			// Move a random cop or agent in CopsOrAgents list to the empty

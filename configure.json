@@ -1,9 +1,9 @@
 {
 	"initialCopDensity":0.04,
-	"initialAgentDensity":0.95,
+	"initialAgentDensity":0.70,
 	"vision":7,
 	"govermentLegitimacy":0.82,
 	"maxJailTerm":30,
-	"movement":false,
+	"movement":true,
 	"tickTime":1000
 }
