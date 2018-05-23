@@ -95,26 +95,7 @@
         approach equilibrium instead of performing random walk in the later stages 
         under some settings.
 
-    \section{Extension}
-        The extension we have implemented is that the government legitimacy will
-        increase as the proportion of jailed agents to number of total agents increases.
-        The equation we derive is 
-        \[GovernmentLegitimacy = \] 
-        \begin{flalign}
-          \begin{split}
-          InitialGovernmentLegitimacy + \frac{JailedAgents}{TotalAgents}
-          \times (1 - InitialGovernmentLegitimacy)
-          \end{split}
-        \end{flalign}
-        This extension makes the model more realistic, as the central authority
-        gets enforced (more agents are jailed), the government legitimacy increases,
-        less agents are willing to rebel. Nevertheless, when less people are jailed,
-        agents will behave similarly as before.
-
     \section{Replication \& Results Analysis}
-    For the experiments under different scenarios, we will apply both the original
-    model we implemented and the extended model we implemented, and compare the
-    results from both of them.
     \subsection{Scenario 1}
      \begin{table}[ht]
         \begin{center}
@@ -137,8 +118,32 @@
         \end{center}
       \end{table}
       The first scenario is using the default setting from the model in 
-      NetLogo. Under this setting, the results of the implemented model is
-      similar to the results of the NetLogo model. 
+      NetLogo.
+      \begin{figure}[h!]
+        \includegraphics[width=\linewidth]{Scenario_1.png}
+        \caption{Scenario 1}
+        \label{fig:scenario}
+      \end{figure}
+
+      \paragraph{}
+      The results of our implementation is very similar to the results of the
+      original NetLogo model. 
+      \paragraph{}
+      They both have similar patterns. With total number
+      of active agents increases, the total number of jailed agents will increase
+      in next few ticks. This then leads to a decrease in the number of active agents,
+      also an increase in the quiet agents. 
+      \paragraph{}
+      However, there are few differences between these two results. Firstly, the
+      average highest number of active agents in the NetLogo model is approximately
+      around $300$ to $350$. In our implementation this is only about $200$.
+      Secondly, the average highest number of jailed agents in the original model
+      is around $400$. In our model it is very close to $500$. The two differences
+      above indicates there is stronger central authority in our implementation.
+      In other words, the cops are more efficient in our implementation, more
+      active agents are arrested.
+
+
 
       \subsection{Scenario 2}
       \begin{table}[ht]
@@ -163,6 +168,11 @@
       \end{table}
       The second scenario represents when there is only limited space on the board
       (only $1\%$ empty space exists).
+      \begin{figure}[h!]
+        \includegraphics[width=\linewidth]{Scenario_2.png}
+        \caption{Scenario 2}
+        \label{fig:scenario}
+      \end{figure}
 
       \subsection{Scenario 3}
       \begin{table}[ht]
@@ -187,6 +197,11 @@
       \end{table}
       The government legitimacy is reduced to $0.62$ in this case, the probability
       of agents become \textit{active} increases.
+      \begin{figure}[h!]
+        \includegraphics[width=\linewidth]{Scenario_3.png}
+        \caption{Scenario 3}
+        \label{fig:scenario}
+      \end{figure}
 
       \subsection{Scenario 4}
       \begin{table}[ht]
@@ -216,6 +231,7 @@
         \caption{Scenario 4}
         \label{fig:scenario}
       \end{figure}
+
       \paragraph{}
       From the chart above, we can observe the behaviour of implemented model is
       is quite similar to the NetLogo model. In this case, there are always more than 
@@ -230,6 +246,22 @@
       in the original NetLogo model. 
       %TODO: Comment about the difference, what kind of assumption/implementation
       % we have used can cause this difference?
+
+    \section{Extension}
+        The extension we have implemented is that the government legitimacy will
+        increase as the proportion of jailed agents to number of total agents increases.
+        The equation we derive is 
+        \[GovernmentLegitimacy = \] 
+        \begin{flalign}
+          \begin{split}
+          InitialGovernmentLegitimacy + \frac{JailedAgents}{TotalAgents}
+          \times (1 - InitialGovernmentLegitimacy)
+          \end{split}
+        \end{flalign}
+        This extension makes the model more realistic, as the central authority
+        gets enforced (more agents are jailed), the government legitimacy increases,
+        less agents are willing to rebel. Nevertheless, when less people are jailed,
+        agents will behave similarly as before.
 
     \section{Conclusion}
     
