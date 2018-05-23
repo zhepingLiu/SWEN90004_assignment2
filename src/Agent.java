@@ -100,7 +100,7 @@ public class Agent implements Character {
         reportGrievance();
         reportArrestProbability(copsCount, activeCount);
 
-        if (this.grievance - riskAversion * estimatedArrestProbability
+        if (grievance - riskAversion * estimatedArrestProbability
                 > Controller.THRESHOLD) {
             this.active = true;
         } else {
