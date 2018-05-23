@@ -17,9 +17,9 @@ public class Controller {
     public final static double K = 2.3;
     public final static double THRESHOLD = 0.1;
 
-    public final static boolean MOVEMENT = true;
+    public final static boolean MOVEMENT = false;
 
-    public final static double AGENT_DENSITY = 0.95;
+    public final static double AGENT_DENSITY = 0.7;
     public final static double COP_DENSITY = 0.04;
 
     public final static int MAX_JAIL_TERM = 30;
@@ -27,7 +27,7 @@ public class Controller {
     public final static double MAX_RISK_AVERSION = 1.0;
     public final static double MAX_PERCEIVED_HARDSHIP = 1.0;
 
-    public static double INITIAL_GOVERNMENT_LEGITIMACY = 0.62;
+    public static double INITIAL_GOVERNMENT_LEGITIMACY = 0.82;
     public static double GOVERNMENT_LEGITIMACY = INITIAL_GOVERNMENT_LEGITIMACY;
     public static int VISION = 7;
 
@@ -266,6 +266,7 @@ public class Controller {
 //                    }
 //                }
 //            }
+
             // randomly shuffle the cops
             Collections.shuffle(cops);
             for (Cop c : cops) {
