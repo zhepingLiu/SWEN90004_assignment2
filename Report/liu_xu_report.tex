@@ -1,6 +1,8 @@
 \documentclass[11pt]{article}
 \usepackage{indentfirst}
 \usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{ {. /images/} }
 
 \title{SWEN90004 Modelling Complex Software System\\
         \textbf{Assignment 2 Report}}
@@ -73,19 +75,46 @@
         every tick. They can enforce at most one active agent within their vision
         at each tick and move to their patches.
 
+    
+    \section{Assumptions}
+        During replicating the Rebellion model, we have made some assumptions about
+        it.
+        \paragraph{First assumption} A single patch is able to hold multiple
+        characters (includes both \textbf{Agent} and \textbf{Cop}). This assumption
+        is made because of patches containing jailed agents are also considered
+        as \textit{empty}. Therefore, there is possibility that when jailed agents
+        are released and placed back to their previous patches, there are other 
+        characters on those patches.
+        \paragraph{Second assumption} Characters update their every behaviour (including
+        movement, determine behaviour and enforce) in random orders. The NetLogo
+        model does not specify the order of characters during each updating phase.
+        However, when we are updating characters without random orders, we obtain
+        different patterns from the NetLogo results. The status of the model will
+        approach equilibrium instead of performing random walk in the later stages 
+        under some settings.
+
     \section{Extension}
         The extension we have implemented is that the government legitimacy will
         increase as the proportion of jailed agents to number of total agents increases.
         The equation we derive is 
+        \[GovernmentLegitimacy = \] 
         \begin{flalign}
           \begin{split}
-          GovernmentLegitimacy = \\
           InitialGovernmentLegitimacy + \frac{JailedAgents}{TotalAgents}
           \times (1 - InitialGovernmentLegitimacy)
           \end{split}
         \end{flalign}
-    \section{Replication}
-    \begin{table}[h]
+        This extension makes the model more realistic, as the central authority
+        gets enforced (more agents are jailed), the government legitimacy increases,
+        less agents are willing to rebel. Nevertheless, when less people are jailed,
+        agents will behave similarly as before.
+
+    \section{Replication \& Results Analysis}
+    For the experiments under different scenarios, we will apply both the original
+    model we implemented and the extended model we implemented, and compare the
+    results from both of them.
+    \subsection{Scenario No.1}
+     \begin{table}[h]
         \begin{center}
           \begin{tabular}{|l|l|}
           \hline
@@ -102,11 +131,85 @@
             Movement & True \\
           \hline
           \end{tabular}
-          \caption{Setting No.1}\label{table1}
+          \caption{Scenario No.1}\label{table1}
         \end{center}
       \end{table}
-        
-    \section{Extension}
-    \section{Results \& Discussion}
+      The first scenario is using the default setting from the model in 
+      NetLogo. Under this setting, the results of the implemented model is
+      similar to the results of the NetLogo model. 
+
+      \subsection{Scenario No.2}
+      \begin{table}[h]
+        \begin{center}
+          \begin{tabular}{|l|l|}
+          \hline
+            Initial cop density & 0.04 \\
+          \hline\hline
+            Initial agent density & 0.95 \\
+          \hline
+            Vision & 7 \\
+          \hline
+            Government Legitimacy & 0.82 \\
+          \hline
+            Max jail term & 30 \\
+          \hline
+            Movement & True \\
+          \hline
+          \end{tabular}
+          \caption{Scenario No.2}\label{table2}
+        \end{center}
+      \end{table}
+      The second scenario represents when there is only limited space on the board
+      (only $1\%$ empty space exists).
+
+      \subsection{Scenario No.3}
+      \begin{table}[h]
+        \begin{center}
+          \begin{tabular}{|l|l|}
+          \hline
+            Initial cop density & 0.04 \\
+          \hline\hline
+            Initial agent density & 0.70 \\
+          \hline
+            Vision & 7 \\
+          \hline
+            Government Legitimacy & 0.62 \\
+          \hline
+            Max jail term & 30 \\
+          \hline
+            Movement & True \\
+          \hline
+          \end{tabular}
+          \caption{Scenario No.3}\label{table3}
+        \end{center}
+      \end{table}
+      The government legitimacy is reduced to $0.62$ in this case, the probability
+      of agents become \textit{active} increases.
+
+      \subsection{Scenario No.4}
+      \begin{table}[h]
+        \begin{center}
+          \begin{tabular}{|l|l|}
+          \hline
+            Initial cop density & 0.04 \\
+          \hline\hline
+            Initial agent density & 0.70 \\
+          \hline
+            Vision & 7 \\
+          \hline
+            Government Legitimacy & 0.82 \\
+          \hline
+            Max jail term & 30 \\
+          \hline
+            Movement & False \\
+          \hline
+          \end{tabular}
+          \caption{Scenario No.4}\label{table4}
+        \end{center}
+      \end{table}
+      In this scenario, the \textit{Movement} is set to \textbf{False}, which is
+      only cops are able to move in this case.
+
     \section{Conclusion}
+    
 \end{document}
