@@ -1,4 +1,4 @@
-package model;
+
 
 /**
  * This class represents the empty patch.

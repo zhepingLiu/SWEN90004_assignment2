@@ -1,8 +1,3 @@
-package model;
-
-import utils.Const;
-import utils.RandomUtil;
-
 /**
  * This class represents the behavior of 
  * Agent.

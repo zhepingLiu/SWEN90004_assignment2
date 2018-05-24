@@ -1,4 +1,3 @@
-package utils;
 
 /**
  * Define the constant value of the model

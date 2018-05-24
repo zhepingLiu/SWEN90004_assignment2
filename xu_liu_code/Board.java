@@ -1,18 +1,8 @@
-package Controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import configure.ConfigureVO;
-import model.Agent;
-import model.Coordinate;
-import model.Cop;
-import model.Empty;
-import model.Patch;
-import utils.Const;
-import utils.PrintUtil;
-import utils.RandomUtil;
 
 public class Board {
 

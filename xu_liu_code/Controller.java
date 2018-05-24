@@ -1,4 +1,3 @@
-package Controller;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,16 +10,6 @@ import java.util.Iterator;
 
 import com.google.gson.Gson;
 
-import Exception.DensityException;
-import configure.ConfigureVO;
-import model.Agent;
-import model.Coordinate;
-import model.Cop;
-import model.Empty;
-import model.Patch;
-import utils.Const;
-import utils.PrintUtil;
-import utils.RandomUtil;
 
 /**
  * This class controls all major process of the model

@@ -1,4 +1,3 @@
-package model;
 
 /**
  * This class represents the behavior of cops

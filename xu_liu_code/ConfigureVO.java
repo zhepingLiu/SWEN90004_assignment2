@@ -1,4 +1,4 @@
-package configure;
+
 import com.google.gson.Gson;
 
 /**

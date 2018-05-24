@@ -1,4 +1,3 @@
-package utils;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -7,11 +6,7 @@ import java.util.ArrayList;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
-import Controller.Board;
-import model.Agent;
-import model.Cop;
-import model.Empty;
-import model.Patch;
+
 
 /**
  * This class outputs some informations of the model,
