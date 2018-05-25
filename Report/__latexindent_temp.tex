@@ -1,5 +1,4 @@
-\begin{figure}[h!]
-        \includegraphics[width=\linewidth]{Scenario_4.png}
-        \caption{Scenario 4}
-        \label{fig:scenario}
-      \end{figure}
+After we delivered the proposal, when we try to start to implement the design, we found
+some parts of the model were missing, such as some utility and configure classes. As a result, we extended the model with some new classes. In order to simulate the model with Java, we tried to understand the whole logic of the model in NetLogo. However, the code in NetLogo is not precise. Lots of conditions are not declared very clearly in the model, such as how to move an agent or a cop in the board. We tried to figure out how NetLogo moves people on board by reading the official document but didn’t find very useful information. By observing the behavior of movement in NetLogo, we found that even there are very few empty patches can move, the model can still achieve a very high movement. In order to achieve a higher percentage movement, we designed a new way in which when one cop or agent moved to other place other
+agents or cops can move into this new empty patch. During the debug stage, we found that our java version model will eventually become a straight line whereas the original model won’t. One reason for this situation is that we didn’t apply random picking up an agent or a cop and move it. Then we found a new problem which is some agents will miss after a few tick times. We solved
+the problem by fixing the bug that some agents will be covered by other agents. We tried our best to make the result of our Java version similar to the result of the model of NetLogo, but there is still some tiny difference. Most of them are caused by the behavior of the model which is not clear for us. In this case, we can only make an assumption for that.

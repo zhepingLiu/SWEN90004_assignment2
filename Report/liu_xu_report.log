@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.21)  23 MAY 2018 20:34
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.21)  23 MAY 2018 23:31
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -88,19 +88,39 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 713.
 LaTeX Info: Redefining \[ on input line 2817.
 LaTeX Info: Redefining \] on input line 2818.
 )
-(/usr/local/texlive/2017/texmf-dist/tex/latex/a4wide/a4wide.sty
-Package: a4wide 1994/08/30
-
-(/usr/local/texlive/2017/texmf-dist/tex/latex/ntgclass/a4.sty
-Package: a4 2004/04/15 v1.2g A4 based page layout
-))
-(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphicx.sty
-Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2010/09/12 v5.6 Page Geometry
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks19
 )
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
+)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count99
+\Gm@cntv=\count100
+\c@Gm@tempcnt=\count101
+\Gm@bindingoffset=\dimen112
+\Gm@wd@mp=\dimen113
+\Gm@odd@mp=\dimen114
+\Gm@even@mp=\dimen115
+\Gm@layoutwidth=\dimen116
+\Gm@layoutheight=\dimen117
+\Gm@layouthoffset=\dimen118
+\Gm@layoutvoffset=\dimen119
+\Gm@dimlist=\toks20
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
+
 (/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2017/06/25 v1.2c Standard LaTeX Graphics (DPC,SPQR)
 
@@ -115,10 +135,16 @@ Package graphics Info: Driver file: pdftex.def on input line 99.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-def/pdftex.def
 File: pdftex.def 2017/06/24 v1.0g Graphics/color driver for pdftex
 ))
-\Gin@req@height=\dimen112
-\Gin@req@width=\dimen113
+\Gin@req@height=\dimen120
+\Gin@req@width=\dimen121
 )
 (./liu_xu_report.aux
+
+LaTeX Warning: Label `fig:scenario' multiply defined.
+
+
+LaTeX Warning: Label `fig:scenario' multiply defined.
+
 
 LaTeX Warning: Label `fig:scenario' multiply defined.
 
@@ -131,31 +157,66 @@ LaTeX Warning: Label `fig:scenario' multiply defined.
 )
 \openout1 = `liu_xu_report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
- (/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: includehead includefoot 
+* h-part:(L,W,R)=(56.9055pt, 483.69687pt, 56.9055pt)
+* v-part:(T,H,B)=(56.9055pt, 731.23584pt, 56.9055pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=483.69687pt
+* \textheight=664.23584pt
+* \oddsidemargin=-15.36449pt
+* \evensidemargin=-15.36449pt
+* \topmargin=-15.36449pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=11.0pt
+* \footskip=30.0pt
+* \marginparwidth=59.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count99
-\scratchdimen=\dimen114
+\scratchcounter=\count102
+\scratchdimen=\dimen122
 \scratchbox=\box28
-\nofMPsegments=\count100
-\nofMParguments=\count101
-\everyMPshowfont=\toks20
-\MPscratchCnt=\count102
-\MPscratchDim=\dimen115
-\MPnumerator=\count103
-\makeMPintoPDFobject=\count104
-\everyMPtoPDFconversion=\toks21
+\nofMPsegments=\count103
+\nofMParguments=\count104
+\everyMPshowfont=\toks21
+\MPscratchCnt=\count105
+\MPscratchDim=\dimen123
+\MPnumerator=\count106
+\makeMPintoPDFobject=\count107
+\everyMPtoPDFconversion=\toks22
 ) (/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
@@ -192,10 +253,6 @@ Package etexcmds Info: Could not find \expanded.
 (/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
 )
-
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifpdf.sty
-Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
-)
 Package pdftexcmds Info: LuaTeX not detected.
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
@@ -215,67 +272,87 @@ e
 [1
 
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-<Scenario_1.png, id=13, 652.4375pt x 246.9225pt>
+<Scenario_1.png, id=13, 602.25pt x 371.3875pt>
 File: Scenario_1.png Graphic file (type png)
 <use Scenario_1.png>
-Package pdftex.def Info: Scenario_1.png  used on input line 123. on input line 
-123.
-Package pdftex.def Info: Requested size: 442.65375pt x 167.53206pt on input lin
-e 123.
+Package pdftex.def Info: Scenario_1.png  used on input line 122. on input line 
+122.
+Package pdftex.def Info: Requested size: 483.69687pt x 298.28911pt on input lin
+e 122.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [2]
-<Scenario_2.png, id=22, 620.3175pt x 301.125pt>
+<Scenario_2.png, id=22, 599.23875pt x 369.38pt>
 File: Scenario_2.png Graphic file (type png)
 <use Scenario_2.png>
-Package pdftex.def Info: Scenario_2.png  used on input line 172. on input line 
-172.
-Package pdftex.def Info: Requested size: 442.65375pt x 214.88pt on input line 1
-72.
+Package pdftex.def Info: Scenario_2.png  used on input line 171. on input line 
+171.
+Package pdftex.def Info: Requested size: 483.69687pt x 298.16472pt on input lin
+e 171.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<Scenario_3.png, id=23, 621.32124pt x 276.03125pt>
+[3 <./Scenario_1.png>]
+<Scenario_3.png, id=27, 598.235pt x 365.365pt>
 File: Scenario_3.png Graphic file (type png)
 <use Scenario_3.png>
-Package pdftex.def Info: Scenario_3.png  used on input line 201. on input line 
-201.
-Package pdftex.def Info: Requested size: 442.65375pt x 196.65746pt on input lin
-e 201.
-[3 <./Scenario_1.png>]
+Package pdftex.def Info: Scenario_3.png  used on input line 216. on input line 
+216.
+Package pdftex.def Info: Requested size: 483.69687pt x 295.4144pt on input line
+ 216.
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<Scenario_4.png, id=28, 598.235pt x 289.08pt>
-File: Scenario_4.png Graphic file (type png)
-<use Scenario_4.png>
-Package pdftex.def Info: Scenario_4.png  used on input line 230. on input line 
-230.
-Package pdftex.def Info: Requested size: 442.65375pt x 213.9026pt on input line
- 230.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [4 <./Scenario_2.png>]
+<Scenario_4.png, id=32, 598.235pt x 365.365pt>
+File: Scenario_4.png Graphic file (type png)
+<use Scenario_4.png>
+Package pdftex.def Info: Scenario_4.png  used on input line 255. on input line 
+255.
+Package pdftex.def Info: Requested size: 483.69687pt x 295.4144pt on input line
+ 255.
 
-LaTeX Warning: Text page 5 contains only floats.
 
-[5 <./Scenario_3.png> <./Scenario_4.png>] [6] (./liu_xu_report.aux)
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[5 <./Scenario_3.png>]
+<Scenario_5.png, id=37, 599.23875pt x 369.38pt>
+File: Scenario_5.png Graphic file (type png)
+<use Scenario_5.png>
+Package pdftex.def Info: Scenario_5.png  used on input line 293. on input line 
+293.
+Package pdftex.def Info: Requested size: 483.69687pt x 298.16472pt on input lin
+e 293.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[6 <./Scenario_4.png>]
+<Extension.png, id=42, 598.235pt x 368.37625pt>
+File: Extension.png Graphic file (type png)
+<use Extension.png>
+Package pdftex.def Info: Extension.png  used on input line 328. on input line 3
+28.
+Package pdftex.def Info: Requested size: 483.69687pt x 297.84912pt on input lin
+e 328.
+ [7 <./Scenario_5.png>] [8 <./Extension.png>] [9]
+(./liu_xu_report.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 2108 strings out of 492990
- 29419 string characters out of 6132635
- 91911 words of memory out of 5000000
- 5639 multiletter control sequences out of 15000+600000
+ 2578 strings out of 492990
+ 36148 string characters out of 6132635
+ 104724 words of memory out of 5000000
+ 6104 multiletter control sequences out of 15000+600000
  10362 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,17n,25p,390b,251s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,17n,32p,390b,251s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
@@ -287,10 +364,10 @@ al/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/
 texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/t
 exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/tex
 live/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on liu_xu_report.pdf (6 pages, 325779 bytes).
+Output written on liu_xu_report.pdf (9 pages, 501699 bytes).
 PDF statistics:
- 76 PDF objects out of 1000 (max. 8388607)
- 48 compressed objects within 1 object stream
+ 91 PDF objects out of 1000 (max. 8388607)
+ 56 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 21 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
 

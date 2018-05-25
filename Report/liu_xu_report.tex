@@ -1,7 +1,8 @@
 \documentclass[11pt]{article}
 \usepackage{indentfirst}
 \usepackage{amsmath}
-\usepackage{a4wide} %Wider text on A4 paper
+%\usepackage{a4wide} %Wider text on A4 paper
+\usepackage[a4paper,includeheadfoot,margin=2cm]{geometry}
 \usepackage{graphicx}
 \graphicspath{ {/Report/} } % we have to call pdflatex from the folder above /Report
                             % to make sure pdflatex can find the images
@@ -69,8 +70,6 @@
         will be possibility for them to become \textit{jailed} by the enforce action
         of cops. A random jail term between 0 and the maximum jail term allowed will
         be given to them and they are not able to move or action during that time.
-        However, a patch contains jailed agents are still considered as \textit{empty}
-        when no other agents or cops on it.
         \subsection{Cop}
         Cops are the representation of power of authority in this model. Cops
         are always allowed to move to empty patches within their vision at 
@@ -142,8 +141,7 @@
       above indicates there is stronger central authority in our implementation.
       In other words, the cops are more efficient in our implementation, more
       active agents are arrested.
-
-
+      %TODO: May illustrate the reason behind this
 
       \subsection{Scenario 2}
       \begin{table}[ht]
@@ -166,13 +164,30 @@
           \caption{Scenario 2}\label{table2}
         \end{center}
       \end{table}
-      The second scenario represents when there is only limited space on the board
-      (only $1\%$ empty space exists).
+      The second scenario represents when there is only limited space on the board. 
+      The initial agent density has been increased to $95\%$, and there is only
+      $1\%$ empty spaces left in the board initially.
       \begin{figure}[h!]
         \includegraphics[width=\linewidth]{Scenario_2.png}
         \caption{Scenario 2}
         \label{fig:scenario}
       \end{figure}
+
+      \paragraph{}
+      The overall results is very close to the results from the previous setting.
+      One difference that can be observed is the ratio of jailed agents comparing
+      to the active agents increases. In more detail, the total number of active
+      agents remains in the similar level. However, the total number of jailed agents
+      has a slight increase, the average highest number of jailed agents is now
+      around $600$.
+      \paragraph{}
+      Nevertheless, in the original NetLogo model, the increase in the number of
+      active agents is larger. The average highest number of active agents in the
+      original model is $500$, where it is $250$ in our implementation. Also, the
+      difference between the number of jailed agents and the number of active agents
+      is smaller in the original model. The above difference implies the same conclusion
+      as the first scenario, the central authority are more effective in our implemented
+      model comparing to the original one.
 
       \subsection{Scenario 3}
       \begin{table}[ht]
@@ -202,6 +217,16 @@
         \caption{Scenario 3}
         \label{fig:scenario}
       \end{figure}
+
+      \paragraph{}
+      By decreasing the government legitimacy, there is much higher number of 
+      jailed agents, even more than the number of quiet agents in our implementation.
+      Comparing to jailed agents, the number of active agents remains at the similar
+      level compares to \textit{Scenario 1}. This result states that agents are
+      more likely to rebel, and then arrested under this scenario.
+      \paragraph{}
+      Comparing to the original model, this time our implementation has less average
+      number of quiet agents. %TODO:
 
       \subsection{Scenario 4}
       \begin{table}[ht]
@@ -233,19 +258,56 @@
       \end{figure}
 
       \paragraph{}
-      From the chart above, we can observe the behaviour of implemented model is
-      is quite similar to the NetLogo model. In this case, there are always more than 
-      $50\%$ of agents are in state \textit{quiet}. At the highest tick, there
-      are around $90\%$ quiet agents. When rebellion occurs, the jailed number
-      of agents will increase rapidly in the next few ticks which stops the rebellion
-      growing further.
+      By restricting the move ability of agents, there is less number of active
+      agents in our implementation. The reason for this can be agents with higher
+      probability to rebel are not able to move together to cause a large rebellion.
       \paragraph{}
-      Nevertheless, there are still some difference between our implementation with
-      the NetLogo implementation. The average highest number of active agents at
+      Nevertheless, there is no clear difference when disable the movement in the
+      original model. The average highest number of active agents at
       one tick is only around $200$ in our implementation. But it is close to $350$
       in the original NetLogo model. 
-      %TODO: Comment about the difference, what kind of assumption/implementation
-      % we have used can cause this difference?
+
+      \subsection{Scenario 5}
+      \begin{table}[ht]
+        \begin{center}
+          \begin{tabular}{|l|l|}
+          \hline
+            Initial cop density & 0.04 \\
+          \hline
+            Initial agent density & 0.70 \\
+          \hline
+            Vision & \textbf{5} \\
+          \hline
+            Government Legitimacy & 0.82 \\
+          \hline
+            Max jail term & 30 \\
+          \hline
+            Movement & True \\
+          \hline
+          \end{tabular}
+          \caption{Scenario 5}\label{table5}
+        \end{center}
+      \end{table}
+      The final scenario we have is reducing the \textbf{vision} from 7 to 5.
+      \begin{figure}[h!]
+        \includegraphics[width=\linewidth]{Scenario_5.png}
+        \caption{Scenario 5}
+        \label{fig:scenario}
+      \end{figure}
+      \paragraph{}
+      From the above results, there is huge difference between this case and 
+      the \textit{Scenario 1}. Firstly, the amplitude of all three lines are much
+      smaller than \textit{Scenario 1}. This is since all agents and cops can obtain
+      less information than before, therefore, their behaviour is less volatile
+      than before. Secondly, the average number of quiet agents slightly decreases
+      from $750$ to $700$. Thirdly, the average number of jailed agents increases
+      from $350$ to $400$. Finally, the average number of active agents decreases
+      from $80$ to around $40$.
+      From these three differences, we can conclude that there is slightly increase
+      in the number of rebelled agents, and more of them are arrested.
+      \paragraph{}
+      Under this case, the results of our implementation is very close to the results
+      produced by the original model.
 
     \section{Extension}
         The extension we have implemented is that the government legitimacy will
@@ -260,9 +322,52 @@
         \end{flalign}
         This extension makes the model more realistic, as the central authority
         gets enforced (more agents are jailed), the government legitimacy increases,
-        less agents are willing to rebel. Nevertheless, when less people are jailed,
+        less agents are willing to rebel. When less people are jailed,
         agents will behave similarly as before.
+        \begin{figure}[h!]
+          \includegraphics[width=\linewidth]{Extension.png}
+          \caption{Extension}
+          \label{fig:scenario}
+        \end{figure}
+
+        \paragraph{}
+        The above chart is the result when applying the extension to the settings
+        in \textit{Scenario 1}. Obviously, the average number of quiet agents increases,
+        average number of jailed agents and active agents decreases. This proves
+        the statement described above. Enforcement will be more effective since it
+        not only reduce the number of active agents by putting them in jail, it also
+        increases government legitimacy to make less people willing to rebel.
 
     \section{Conclusion}
+    In conclusion, we have done five experiments under different parameters. To
+    observe the effect of each parameter, each of the later four scenarios only modifies
+    one parameter from the base case, that is, \textit{Scenario 1}. Parameters such as
+    \textbf{government legitimacy} and \textbf{vision} are very effective to the
+    model. Other parameters such as \textbf{agent-density} and \textbf{movement}
+    only have limited effect on the model by themselves. In addition, there is
+    some differentiation between the model we implement and the original NetLogo
+    model, like more effective cops during enforce phase. 
+
+    \newpage
+
+    \section{Appendix}
+    When we first tried to start designing the Java implementation, we found
+    some specification of the model was missing.
+    As a result, we extended the model with some new classes. In order to simulate 
+    the model with Java, we tried to understand the logic of the model in NetLogo.
+    However, the code in NetLogo is not precise. Many conditions are not described 
+    clearly in the model, such as the process of moving a character in the board. 
+    We tried to figure out how NetLogo moves people on board by reading the official
+    documents, but we did not find useful information from them. We finally resolve
+    this problem by observing the behaviour of the NetLogo model, and made some
+    assumptions, we even developed more than one version of code to experiment the
+    true logic behind these hidden functions.
+    After we finished the first version, we found that our java model behaves quite differently
+    from the original model. We had to read through our codes to fix the incorrect
+    behaviour of model. Nevertheless, currently there are still few inconsistent
+    behaviours between our implementation and the original model. We have identified
+    them in the report.
+    To make the structure and design of our implementation more clear, we refactored
+    our code after most bugs are fixed. 
     
 \end{document}
